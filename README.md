@@ -3,7 +3,9 @@ Jim's Monopoly Server
 
 ## Installation
 
+```
 npm install
+```
 
 ## Running
 
