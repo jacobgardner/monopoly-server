@@ -1,3 +1,4 @@
+```
 Sockets{
     To Server{
         -getAccountVal: get value of money from requested player account.
@@ -69,3 +70,4 @@ MonopolyGame{
   chanceList;
   communityChestList;
 }
+```
