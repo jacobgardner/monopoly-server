@@ -8,21 +8,12 @@ module.exports = {
         es6: true,
         node: true,
     },
-    settings: {
-        react: {
-            pragma: "React"
-        }
-    },
-    plugins: [
-        "react"
-    ],
     parser: "babel-eslint",
-    extends: ["eslint:recommended", "plugin:react/recommended"],
+    extends: ["eslint:recommended"],
     parserOptions: {
         sourceType: "module",
         ecmaFeatures: {
             ecmaVersion: 6,
-            jsx: true,
             experimentalObjectRestSpread: true,
         }
     },
@@ -33,10 +24,7 @@ module.exports = {
             4
         ],
         "prop-types": 0,
-        "linebreak-style": [
-            "error",
-            "unix"
-        ],
+        "linebreak-style": 0,
         quotes: [
             "error",
             "single"
