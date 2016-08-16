@@ -30,3 +30,42 @@ Sockets{
         -sendBoardState
     }
 }
+
+MonopolyGame{
+  playerArray{
+    ID;
+    position;
+    money;
+    propertiesOwned{
+      property;
+      houses;
+      isMonopoly;//should double rent...check rules.
+    }
+    cardsOwned;
+    transferMoney(to, amount);
+  }
+
+  propertyList{
+    name;
+    position;
+    cost;
+    rent;
+    mortgage;
+    ownerId;
+    landonFunction;
+    /*****************************
+    * what to do when landed on.
+    *   For buyable properties:
+    *     if(buyable){
+    *       promptPurchase
+    *     }else{
+    *       promptPayment;
+    *     }
+    *   For others:
+    *     run specific functions
+    ******************************/
+  }
+
+  chanceList;
+  communityChestList;
+}
