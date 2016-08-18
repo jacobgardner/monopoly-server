@@ -1,3 +1,4 @@
+```
 cleanBoard; //load clean PropertyList, card lists.
 
 for Player in PlayerList{
@@ -10,3 +11,4 @@ while(PlayerList.amount > 1){
   turn(PlayerList.Current);
   PlayerList.Current = PlayerList.Current.Next;
 }
+```
