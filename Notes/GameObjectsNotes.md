@@ -1,6 +1,6 @@
 ```
 MonopolyGame{
-  playerArray{
+  PlayerList{
     Player{
       iD;
       position;
@@ -12,6 +12,7 @@ MonopolyGame{
     }
     cardsOwned;
     transferMoney(to, amount);
+    isJailed;
   }
 
   PropertyList{
