@@ -13,14 +13,8 @@ export class Player{
       //throw error, inssuficient funds;
     }
 
-    FromPlayer.setMoney(FromPlayer.getMoney() - amount);//take money
-    ToPlayer.setMoney(ToPlayer.getMoney() + amount);//give money
+    FromPlayer.money = (FromPlayer.money - amount);//take money
+    ToPlayer.money = (ToPlayer.money + amount);//give money
   }
 
-  set setMoney(amount){//ask Jake about set and get
-    this.money = amount;
-  }
-  get getMoney(){
-    return this.money;
-  }
 }

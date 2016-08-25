@@ -22,13 +22,13 @@ export class Monopoly {
   }
 
   runTurn(){
-    
+
   }
 
   cleanBoard(){
-    PropertyList = new PropertyList;
-    ChanceList = new ChanceList;
-    CommChestList = new CommChestList;
+    this.PropertyList = new PropertyList;
+    this.ChanceList = new ChanceList;
+    this.CommChestList = new CommChestList;
 
     resetPlayers();
   }
@@ -38,11 +38,8 @@ export class Monopoly {
   resetPlayers(){}
 
   static rollDice(){
-    var dice = new Array(2);
-
-    dice[0] = Math.floor(Math.random() * 6) + 1;
-    dice[1] = Math.floor(Math.random() * 6) + 1;
-
-    return dice;
+    return (new Array(2)).map(() => {
+      return Math.floor(Math.random() * 6) + 1;
+    });
   }
 }
