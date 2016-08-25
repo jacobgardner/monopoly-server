@@ -1,6 +1,7 @@
 var server = require('http').createServer();
 var io = require('socket.io')(server);
 import {Monopoly} from "./monopoly.js";
+import {PlayerList} from "./player.js";
 
 
 
