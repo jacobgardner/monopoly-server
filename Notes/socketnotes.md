@@ -46,3 +46,28 @@ Sockets{
     }
 }
 ```
+
+```
+Sockets V2{
+  To Client{
+    -sendBoardState{//should send everytime a player is prompted to ensure they have updated info
+      [PlayerID{
+        name;
+        position;
+        [propertyID];
+        goojf; //number of get out of jail free cards (2 per game)
+      }]
+      [PropertyID{//same as position
+        name;
+        buyable;//Owned properties, Go, Luxury Tax, etc. are not buyable
+
+      }]
+      Available houses;//while money is not limited, there are only 32 houses and 12 hotels
+      Available hotels;
+    }
+  }
+
+  To Server{
+    -getBoardState
+  }
+}
