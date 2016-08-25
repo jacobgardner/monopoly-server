@@ -1,4 +1,18 @@
 ```
+On 'connect'{
+  request access(good){
+    assign ID(){
+      new Player;
+      getID;
+    }
+  }
+  else{
+    emit "need access"
+  }
+
+}
+
+
 Sockets{
     To Server{
         -getAccountVal: get value of money from requested player account.
