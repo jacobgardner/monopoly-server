@@ -9,12 +9,12 @@ export class Monopoly {
   loadPlayer(){}
 
   runGame(){
-    cleanBoard();
+    this.cleanBoard();
 
-    findFirstPlayer();
+    this.findFirstPlayer();
 
     while(PlayerList.length > 1){
-      runTurn(PlayerList.current);
+      this.runTurn(PlayerList.current);
       PlayerList.Current = PlayerList.Current.Next;//or next index or w.e. I use
     }
 
@@ -25,12 +25,14 @@ export class Monopoly {
 
   }
 
+  boardState(){}//returns JSON boardState
+
   cleanBoard(){
     this.PropertyList = new PropertyList;
     this.ChanceList = new ChanceList;
     this.CommChestList = new CommChestList;
 
-    resetPlayers();
+    this.resetPlayers();
   }
 
   findFirstPlayer(){}

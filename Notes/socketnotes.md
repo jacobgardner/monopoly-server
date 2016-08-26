@@ -65,9 +65,31 @@ Sockets V2{
       Available houses;//while money is not limited, there are only 32 houses and 12 hotels
       Available hotels;
     }
+
+    -promptTurn:
+
+    -promptPurchase: when player lands on purchasable property
+
+    -promptPayment: when player must pay to bank or other play(s)
+
   }
 
   To Server{
     -getBoardState
+
+    -useCard: use Get out of jail free card.
+
+    -initiateTrade
+
+    -initiateAuction
+
+    -buildHouse: default 1, can build multiple
+
+    -sellHouse: default 1, can sell multiple
+
+    -forfeit
+
+    -rollDie: 2d6 Roll
+
   }
 }
