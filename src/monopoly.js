@@ -12,6 +12,7 @@ export default class Monopoly {
   loadPlayer(name, regID){
     //TODO: Check for registered ID.
     this.PlayerList.push(new Player(name, regID));
+    return this;
   }
 
   runGame(){
@@ -40,6 +41,8 @@ export default class Monopoly {
     this.CommChestList = new CommChestList;
 
     this.resetPlayers();
+
+    return this;
   }
 
   findFirstPlayer(){//TODO what if ties occur
@@ -52,6 +55,7 @@ export default class Monopoly {
         highIndex = 0;
       }
     });
+    return this;
   }
 
   resetPlayers(){
@@ -62,6 +66,7 @@ export default class Monopoly {
       thisPlayer.jailFreeCards = 0;
       thisPlayer.isJailed = false;
     }
+    return this;
   }
 
   static rollDice(){

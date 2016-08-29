@@ -17,5 +17,7 @@ export default class Player{
 
     FromPlayer.money = (FromPlayer.money - amount);//take money
     ToPlayer.money = (ToPlayer.money + amount);//give money
+
+    return this;
   }
 }
