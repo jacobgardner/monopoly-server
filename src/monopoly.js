@@ -1,4 +1,5 @@
 import Player from "./player";
+import Property from "./property";
 
 export default class Monopoly {
   constructor(){
@@ -36,7 +37,7 @@ export default class Monopoly {
   boardState(){}//returns JSON boardState
 
   cleanBoard(){
-    this.PropertyList = new PropertyList;
+    this.PropertyList = new Array(0);
     this.ChanceList = new ChanceList;
     this.CommChestList = new CommChestList;
 

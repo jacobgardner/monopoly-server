@@ -25,7 +25,6 @@ MonopolyGame{
       rent;
       mortgage;
       ownerId;
-      landOnFunction;
       /*****************************
       * what to do when landed on.
       *   For buyable properties:
@@ -37,6 +36,17 @@ MonopolyGame{
       *   For others:
       *     run specific functions
       ******************************/
+      landOnFunctions{
+        1//standard buyable properties
+        2//railroads
+        3//utilities
+        4//commchest/chance
+        5//free parking/jail;
+        6//go
+        7//go to jail
+        8//income Tax
+        9//luxury Tax
+      }
     }
   }
 
