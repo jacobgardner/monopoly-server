@@ -51,6 +51,16 @@ MonopolyGame{
   }
 
   chanceList;
-  communityChestList;
+  communityChestList{
+    cardID;
+    nameStr;
+    function{
+      1// go to x;
+      2// pay/recieve (-)x;
+      3// GOoJF
+      4// go to jail;
+      5// pay per house;
+    }
+  };
 }
 ```

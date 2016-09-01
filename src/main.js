@@ -14,9 +14,7 @@ io.on('connect', function(socket){
     MonopolyGame.loadPlayer(name, regID);
   });
 
-  socket.on('highRoll', function(){//testing
-    MonopolyGame.findFirstPlayer();
-  });
+  socket.on('startGame', runGame());
 
   socket.on('getBoardState', function(){
     socket.broadcast.to(socket.id).emit('sendBoardState', MonopolyGame.BoardState(socket.id));
@@ -42,3 +40,18 @@ io.on('connect', function(socket){
 server.listen(3000, function(){
   console.log('listening on *:3000');
 });
+
+/*function runGame(){
+  MonopolyGame.cleanBoard();
+
+  MonopolyGame.findFirstPlayer();
+
+  while(PlayerList.length > 1){
+    MonopolyGame.runTurn(MonopolyGame.PlayerList[MonopolyGame.currentPlayer]);
+    MonopolyGame.currentPlayer++;//or next index or w.e. I use
+    if(MonopolyGame.PlayerList.length >= MonopolyGame.currentPlayer){
+      MonopolyGame.currentPlayer = 0;
+    }
+  }
+}
+*/

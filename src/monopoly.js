@@ -1,5 +1,6 @@
 import Player from "./player";
-import Property from "./property";
+import fs from 'fs';
+import events from 'events';
 
 export default class Monopoly {
   constructor(){
@@ -8,6 +9,7 @@ export default class Monopoly {
     this.CommChestList = null;
     this.PlayerList = new Array(0);
     this.currentPlayer = null;
+    this.Emitter = new events();
   }
 
   loadPlayer(name, regID){
@@ -32,14 +34,16 @@ export default class Monopoly {
     //add wincount;
   }
 
-  runTurn(){}
+  runTurn(){
+
+  }
 
   boardState(){}//returns JSON boardState
 
   cleanBoard(){
-    this.PropertyList = new Array(0);
-    this.ChanceList = new ChanceList;
-    this.CommChestList = new CommChestList;
+    this.PropertyList = JSON.parse(fs.readFileSync('properties.JSON'));
+    this.ChanceList = JSON.parse(fs.readFileSync('chance.JSON'));
+    this.CommChestList = JSON.parse(fs.readFileSync('communityChest.JSON'));
 
     this.resetPlayers();
 
@@ -66,7 +70,7 @@ export default class Monopoly {
       thisPlayer.propertiesOwned = new Array(28);
       thisPlayer.jailFreeCards = 0;
       thisPlayer.isJailed = false;
-    }
+    });
     return this;
   }
 
