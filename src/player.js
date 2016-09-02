@@ -3,21 +3,21 @@ export default class Player{
     this.person = name;
     this.registeredID = regID;
     this.socketID = null;
-    this.postition = null;
+    this.position = null;
     this.money = null;
-    this.propertiesOwned = new Array(28);
+    this.propertiesOwned = new Array(0);
     this.jailFreeCards = null; //change to list or something;
     this.isJailed = false;
+    this.doubles = null;//
   }
 
-  static transferMoney(FromPlayer, ToPlayer, amount){
-    if(amount > FromPlayer){
-      //throw error, inssuficient funds;
+  movePlayer(diceArray, boardLength){//DONE
+    this.position += diceArray.reduce(( acc, cur ) => acc + cur, 0);
+    if(this.position >= boardLength){
+      this.position -= boardLength;
     }
-
-    FromPlayer.money = (FromPlayer.money - amount);//take money
-    ToPlayer.money = (ToPlayer.money + amount);//give money
 
     return this;
   }
+
 }

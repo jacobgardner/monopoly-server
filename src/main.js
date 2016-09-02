@@ -14,10 +14,13 @@ io.on('connect', function(socket){
     MonopolyGame.loadPlayer(name, regID);
   });
 
-  socket.on('startGame', runGame());
+  MonopolyGame.Emitter.on('promptRoll', function(ActivePlayer){
+    socket.broadcast.to(ActivePlayer.socketID).emit('promptRoll', MonopolyGame.BoardState());
+    socket.once('rollDice', rollDice());
+  });
 
   socket.on('getBoardState', function(){
-    socket.broadcast.to(socket.id).emit('sendBoardState', MonopolyGame.BoardState(socket.id));
+    socket.broadcast.to(socket.id).emit('sendBoardState', MonopolyGame.BoardState());
   });
 
   socket.on('initiateTrade', function(){});//figure out trading.  simple to-from, this-for-that request?  counter trading?  >2 user trading, send conditions of trade to all users for acceptance?
@@ -27,13 +30,6 @@ io.on('connect', function(socket){
     //auction function.  needs to broadcast details, receive highest bids.
   });
 
-  socket.on('rollDice', function(){
-    let dice = Monopoly.rollDice();//should also make monopoly member utilize roll action (e.g. move player on roll)
-    dice.forEach((e) => console.log(e));
-    console.log(dice[0] + dice[1]);
-    io.emit('rollDice', dice);
-  });
-
   socket.on('useCard', function(card) {});
   socket.on('disconnect', function(){});
 });
@@ -41,17 +37,11 @@ server.listen(3000, function(){
   console.log('listening on *:3000');
 });
 
-/*function runGame(){
-  MonopolyGame.cleanBoard();
-
-  MonopolyGame.findFirstPlayer();
-
-  while(PlayerList.length > 1){
-    MonopolyGame.runTurn(MonopolyGame.PlayerList[MonopolyGame.currentPlayer]);
-    MonopolyGame.currentPlayer++;//or next index or w.e. I use
-    if(MonopolyGame.PlayerList.length >= MonopolyGame.currentPlayer){
-      MonopolyGame.currentPlayer = 0;
-    }
+function rollDice(){
+  if(socket.id != ActivePlayer.socketID){//TODO check to see if socket.id and ActivePlayer tranfers like this
+    socket.once('rollDice', rollDice());
   }
-}
-*/
+  else{
+    MonopolyGame.Emitter.emit('rollDice');
+  }
+};
