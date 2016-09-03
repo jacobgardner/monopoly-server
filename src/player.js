@@ -1,8 +1,8 @@
 export default class Player{
-  constructor(name, regID){//finish reading on WeakMaps for private props
+  constructor(name, regID, socketID){//finish reading on WeakMaps for private props
     this.person = name;
     this.registeredID = regID;
-    this.socketID = null;
+    this.socketID = socketID;
     this.position = null;
     this.money = null;
     this.propertiesOwned = new Array(0);
