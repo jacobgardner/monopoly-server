@@ -14,15 +14,12 @@ export default class Monopoly {
   }
 
   loadPlayer(name, regID, socketID){
-    const regArray = JSON.parse(fs.readFileSync('./dist/regIDArray.json'));
+    regArray = JSON.parse(fs.readFileSync('./dist/regIDArray.json'));
     //TODO: Check for registered ID
-    if(regArray.indexOf(regID) >= 0){
+    if(regArray.includes(regID)){
       this.PlayerArray.push(new Player(name, regID, socketID));
-      console.log('Player ' + this.PlayerArray[this.PlayerArray.length - 1].person + ' added.');
-      if(regArray.length == this.PlayerArray.length){
-        console.log('runGame');
+      if(regArray.length == PlayerArray.length){
         this.runGame();
-        return this;
       }
       return this;
     }
@@ -36,10 +33,6 @@ export default class Monopoly {
     this.findFirstPlayer();
 
     while(this.PlayerArray.length > 1){
-      if(this.PlayerArray[this.currentPlayer].money < 0){//test
-        this.PlayerArray.splice(this.currentPlayer, 1);
-        continue;
-      }
       this.runTurn(this.PlayerArray[this.currentPlayer]);
       this.currentPlayer++;//or next index or w.e. I use
       if(this.PlayerArray.length >= this.currentPlayer){
@@ -52,7 +45,7 @@ export default class Monopoly {
 
   runTurn(ActivePlayer){
     const thisGame = this;//because 'this' breaks with the event
-    console.log('runTurn for ' + ActivePlayer.person + '. Player position: ' + ActivePlayer.position);//test
+    console.log('runTurn.  Player position: ' + ActivePlayer.position);//test
 
     this.Emitter.once('rollDice', function(){
       thisGame.toggleListenersOff();
@@ -61,7 +54,6 @@ export default class Monopoly {
       console.log('dice: ' + diceArray.reduce(( acc, cur ) => acc + cur, 0));//test
       ActivePlayer.movePlayer(diceArray, thisGame.PropertyArray.length);
       console.log('new position ' + ActivePlayer.position);//test
-      ActivePlayer.money -= diceArray.reduce(( acc, cur ) => acc + cur, 0) * 10;//test
 //      thisGame.landOnFunction(ActivePlayer);TODO
 
       if(diceArray.every(element => element == diceArray[0])){//probably too much.  allows for more than 2 dice
@@ -81,7 +73,7 @@ export default class Monopoly {
     });
 
     this.toggleListenersOn();
-    console.log('Toggling Listers\n promptRoll for ' + ActivePlayer.person);//test
+    console.log('Toggling Listers\n promptRoll for ' + ActivePlayer.person + ' SocketID: ' + ActivePlayer.socketID);//test
     this.Emitter.emit('promptRoll', ActivePlayer);
   }
 
@@ -107,16 +99,14 @@ export default class Monopoly {
 
   findFirstPlayer(){//TODO what if ties occur
     let highRoll = 0;
-    let highIndex = 0;
-
+    let highIndex = 0
     this.PlayerArray.forEach(function(thisPlayer, index){
-      let thisRoll = Monopoly.rollDice().reduce(( acc, cur ) => acc + cur, 0);
+      let thisRoll = this.rollDice().reduce(( acc, cur ) => acc + cur, 0);
       if(thisRoll > highRoll){
         highRoll = thisRoll;
-        highIndex = index;
+        highIndex = 0;
       }
     });
-    this.currentPlayer = highIndex;
     return this;
   }
 
@@ -132,7 +122,7 @@ export default class Monopoly {
     return this;
   }
 
-  static rollDice(){//DONE
+  rollDice(){//DONE
     const arr = [1,2];
 
     return arr.map(() => (Math.floor(Math.random() * 6) + 1));

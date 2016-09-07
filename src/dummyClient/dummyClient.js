@@ -4,12 +4,7 @@ var socket = require('socket.io-client')('http://localhost:3000');
 socket.on('connect', function(){
   console.log('connected');
 //  socket.emit('rollDice');
-  socket.on('sendBoardState', function(BoardState){
-    console.log('boardState received');
-    fs.writeFileSync('clientBoardState.json', BoardState);
-  });
-
-  socket.emit('register', 'john', '9qArn');
+  socket.emit('register', 'john', 1234);
 
   socket.on('promptRoll', function(BoardState){
     console.log('roll prompted');
