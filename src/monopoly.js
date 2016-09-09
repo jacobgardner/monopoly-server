@@ -96,7 +96,7 @@ export default class Monopoly {
 
     this.toggleListenersOn();
     console.log('Toggling Listers\n promptRolls for ' + activePlayer.person);//test
-    this.emitter.emit('promptRoll', activePlayer, () => {});
+    this.emitter.emit(('promptRoll' + activePlayer.socketID) , activePlayer, () => {});
   }
 
   boardState(){

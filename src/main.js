@@ -12,20 +12,19 @@ io.on('connect', (socket) => {
 
   socket.on('register', (name, regID) => {
     monopolyGame.loadPlayer(name, regID, socket.id);
+
   });
 
-  if(monopolyGame.emitter.listenerCount('promptRoll') <= 0){
-    monopolyGame.emitter.on('promptRoll', (activePlayer) => {
-      socket.once('rollDice', () => {
-        console.log('stuff');
-        monopolyGame.emitter.emit('rollDice', () => {});
+  monopolyGame.emitter.on(('promptRoll' + socket.id), (activePlayer) => {
+    socket.once('rollDice', () => {
+      console.log('stuff');
+      monopolyGame.emitter.emit('rollDice', () => {});
 
-        return this;
-      });
-      console.log('awaiting dice roll');
-      io.to(activePlayer.socketID).emit('promptRoll', monopolyGame.boardState());
+      return this;
     });
-  }
+    console.log('awaiting dice roll');
+    io.to(activePlayer.socketID).emit('promptRoll', monopolyGame.boardState());
+  });
 
   socket.on('getBoardState', () => {
     console.log('sending boardState to ' + socket.id);
