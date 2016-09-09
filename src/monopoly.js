@@ -5,21 +5,21 @@ import events from 'events';
 
 export default class Monopoly {
   constructor(){
-    this.PropertyArray = null;
-    this.ChanceList = null;
-    this.CommChestList = null;
-    this.PlayerArray = new Array(0);
+    this.propertyArray = null;
+    this.chanceList = null;
+    this.commChestList = null;
+    this.playerArray = new Array(0);
     this.currentPlayer = null;
-    this.Emitter = new events();
+    this.emitter = new events();
   }
 
   loadPlayer(name, regID, socketID){
     const regArray = JSON.parse(fs.readFileSync('./dist/regIDArray.json'));
     //TODO: Check for registered ID
     if(regArray.indexOf(regID) >= 0){
-      this.PlayerArray.push(new Player(name, regID, socketID));
-      console.log('Player ' + this.PlayerArray[this.PlayerArray.length - 1].person + ' added.');
-      if(regArray.length == this.PlayerArray.length){
+      this.playerArray.push(new Player(name, regID, socketID));
+      console.log('Player ' + this.playerArray[this.playerArray.length - 1].person + ' added.');
+      if(regArray.length == this.playerArray.length){
         console.log('runGame');
         this.runGame();
         return this;
@@ -35,59 +35,73 @@ export default class Monopoly {
 
     this.findFirstPlayer();
 
-    while(this.PlayerArray.length > 1){
-      if(this.PlayerArray[this.currentPlayer].money < 0){//test
-        this.PlayerArray.splice(this.currentPlayer, 1);
-        continue;
+    this.emitter.on('nextPlayer', () => {
+      if(this.playerArray.length <= 1){
+        console.log(this.playerArray[0].person + ' wins');
+        return this; //end game
       }
-      this.runTurn(this.PlayerArray[this.currentPlayer]);
-      this.currentPlayer++;//or next index or w.e. I use
-      if(this.PlayerArray.length >= this.currentPlayer){
-        this.currentPlayer = 0;
+      if(this.playerArray[this.currentPlayer].money < 0){//test
+        this.playerArray.splice(this.currentPlayer, 1);
+        this.emitter.emit('nextPlayer');
+        return this;
       }
-    }
-
-    //TODO add wincount;
-  }
-
-  runTurn(ActivePlayer){
-    const thisGame = this;//because 'this' breaks with the event
-    console.log('runTurn for ' + ActivePlayer.person + '. Player position: ' + ActivePlayer.position);//test
-
-    this.Emitter.once('rollDice', function(){
-      thisGame.toggleListenersOff();
-
-      let diceArray = thisGame.rollDice();
-      console.log('dice: ' + diceArray.reduce(( acc, cur ) => acc + cur, 0));//test
-      ActivePlayer.movePlayer(diceArray, thisGame.PropertyArray.length);
-      console.log('new position ' + ActivePlayer.position);//test
-      ActivePlayer.money -= diceArray.reduce(( acc, cur ) => acc + cur, 0) * 10;//test
-//      thisGame.landOnFunction(ActivePlayer);TODO
-
-      if(diceArray.every(element => element == diceArray[0])){//probably too much.  allows for more than 2 dice
-        if(++ActivePlayer.doubles >= 3){
-          ActivePlayer.doubles = 0;
-          thisGame.goToJail(ActivePlayer);
-          return this;
-        }
-        else {
-          thisGame.runTurn(ActivePlayer);
-          return this;
-        }
-      }
-      ActivePlayer.doubles = 0;
+      this.runTurn(this.playerArray[this.currentPlayer])
 
       return this;
     });
 
+    this.emitter.emit('nextPlayer', () => {});
+
+    return this;
+    //TODO add wincount;
+  }
+
+  runTurn(activePlayer){
+    //const thisGame = this;//because 'this' breaks with the event
+    console.log('runTurn for ' + activePlayer.person + '. Player position: ' + activePlayer.position);//test
+
+    this.emitter.once('rollDice', () => {
+      this.toggleListenersOff();
+
+      const diceArray = Monopoly.rollDice();
+      console.log('dice: ' + diceArray.reduce(( acc, cur ) => acc + cur, 0));//test
+      activePlayer.movePlayer(diceArray, this.propertyArray.length);
+      activePlayer.money -= diceArray.reduce(( acc, cur ) => acc + cur, 0) * 10;//test
+      console.log('new position ' + activePlayer.position + '. funds left: ' + activePlayer.money);//test
+//      this.landOnFunction(activePlayer);TODO
+
+      if(diceArray.every(element => element == diceArray[0])){//probably too much.  allows for more than 2 dice
+        activePlayer.doubles++;
+        if(activePlayer.doubles >= 3){
+          activePlayer.doubles = 0;
+//          this.goToJail(activePlayer);
+        }
+        else {
+          this.runTurn(activePlayer);
+          return this;
+        }
+      }
+      else {
+      activePlayer.doubles = 0;
+      }
+
+      this.currentPlayer++;//or next index or w.e. I use
+      if(this.currentPlayer >= this.playerArray.length){
+        this.currentPlayer = 0;
+      }
+
+      this.emitter.emit('nextPlayer', () => {});
+      return this;
+    });
+
     this.toggleListenersOn();
-    console.log('Toggling Listers\n promptRoll for ' + ActivePlayer.person);//test
-    this.Emitter.emit('promptRoll', ActivePlayer);
+    console.log('Toggling Listers\n promptRolls for ' + activePlayer.person);//test
+    this.emitter.emit('promptRoll', activePlayer, () => {});
   }
 
   boardState(){
-    const CurrentBoardState = new BoardState(this.PropertyArray, this.PlayerArray, this.currentPlayer);
-//    CurrentBoardState.PlayerArray.forEach(function(thisPlayer){
+    const CurrentBoardState = new BoardState(this.propertyArray, this.playerArray, this.currentPlayer);
+//    CurrentBoardState.playerArray.forEach(function(thisPlayer){
 //      thisPlayer.socketID = null;//TODO this won't work, need to clone or just create new object....just a general idea.
 //      thisPlayer.registeredID = null;
 //    });
@@ -96,9 +110,9 @@ export default class Monopoly {
   }//returns JSON boardState
 
   cleanBoard(){
-    this.PropertyArray = JSON.parse(fs.readFileSync('properties.JSON'));
-//    this.ChanceList = JSON.parse(fs.readFileSync('chance.JSON'));
-//    this.CommChestList = JSON.parse(fs.readFileSync('communityChest.JSON'));
+    this.propertyArray = JSON.parse(fs.readFileSync('properties.JSON'));
+//    this.chanceList = JSON.parse(fs.readFileSync('chance.JSON'));
+//    this.commChestList = JSON.parse(fs.readFileSync('communityChest.JSON'));
 
     this.resetPlayers();
 
@@ -109,8 +123,8 @@ export default class Monopoly {
     let highRoll = 0;
     let highIndex = 0;
 
-    this.PlayerArray.forEach(function(thisPlayer, index){
-      let thisRoll = Monopoly.rollDice().reduce(( acc, cur ) => acc + cur, 0);
+    this.playerArray.forEach((thisPlayer, index) => {
+      const thisRoll = Monopoly.rollDice().reduce(( acc, cur ) => acc + cur, 0);
       if(thisRoll > highRoll){
         highRoll = thisRoll;
         highIndex = index;
@@ -121,13 +135,13 @@ export default class Monopoly {
   }
 
   resetPlayers(){
-    this.PlayerArray.forEach(function(thisPlayer){
+    this.playerArray.forEach((thisPlayer) => {
       thisPlayer.position = 0;
       thisPlayer.money = 1500;
       thisPlayer.propertiesOwned = new Array(0);
       thisPlayer.jailFreeCards = 0;
       thisPlayer.isJailed = false;
-      thisPlayer.double = 0;
+      thisPlayer.doubles = 0;
     });
     return this;
   }
@@ -139,20 +153,20 @@ export default class Monopoly {
   }
 
   toggleListenersOn(){//TODO fill out functions
-    this.Emitter.on('promptTrade',function(){});
-    this.Emitter.on('promptAuction', function(){});
-    this.Emitter.on('leaveJail',function(methodUsed){});
-    this.Emitter.on('houseTransaction',function(position, number){});//positive number is build, negative is sell
-    this.Emitter.on('mortgageProperty', function(position){});
-    this.Emitter.on('unmortgageProperty', function(position){});
+    this.emitter.on('promptTrade',() => {});
+    this.emitter.on('promptAuction', () => {});
+    this.emitter.on('leaveJail', (methodUsed) => {});
+    this.emitter.on('houseTransaction', (position, number) => {});//positive number is build, negative is sell
+    this.emitter.on('mortgageProperty', (position) => {});
+    this.emitter.on('unmortgageProperty', (position) => {});
   }
 
   toggleListenersOff(){
-    this.Emitter.removeAllListeners('promptTrade');
-    this.Emitter.removeAllListeners('promptAuction');
-    this.Emitter.removeAllListeners('leaveJail');
-    this.Emitter.removeAllListeners('houseTransaction');
-    this.Emitter.removeAllListeners('mortgageProperty');
-    this.Emitter.removeAllListeners('unmortgageProperty');
+    this.emitter.removeAllListeners('promptTrade');
+    this.emitter.removeAllListeners('promptAuction');
+    this.emitter.removeAllListeners('leaveJail');
+    this.emitter.removeAllListeners('houseTransaction');
+    this.emitter.removeAllListeners('mortgageProperty');
+    this.emitter.removeAllListeners('unmortgageProperty');
   }
 }

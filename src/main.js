@@ -4,40 +4,44 @@ import Monopoly from "./monopoly";
 
 const server = http.createServer();
 const io = socketio(server);
-const MonopolyGame = new Monopoly();
+const monopolyGame = new Monopoly();
 
-io.on('connection', function(socket){
+io.on('connect', (socket) => {
   //assign user, get id, etc
-  console.log('connected');
+  console.log(' connected');
 
-  socket.on('register', function(name, regID){
-    MonopolyGame.loadPlayer(name, regID, socket.id);
+  socket.on('register', (name, regID) => {
+    monopolyGame.loadPlayer(name, regID, socket.id);
   });
 
-  MonopolyGame.Emitter.on('promptRoll', function(ActivePlayer){
-    socket.once('rollDice', function(){
-      console.log('stuff');
-      MonopolyGame.Emitter.emit('rollDice');
+  if(monopolyGame.emitter.listenerCount('promptRoll') <= 0){
+    monopolyGame.emitter.on('promptRoll', (activePlayer) => {
+      socket.once('rollDice', () => {
+        console.log('stuff');
+        monopolyGame.emitter.emit('rollDice', () => {});
+
+        return this;
+      });
+      console.log('awaiting dice roll');
+      io.to(activePlayer.socketID).emit('promptRoll', monopolyGame.boardState());
     });
-    console.log('awaiting dice roll');
-    io.to(ActivePlayer.socketID).emit('promptRoll', MonopolyGame.boardState());
-  });
+  }
 
-  socket.on('getBoardState', function(){
+  socket.on('getBoardState', () => {
     console.log('sending boardState to ' + socket.id);
-    io.to(socket.id).emit('sendBoardState', MonopolyGame.boardState());
+    io.to(socket.id).emit('sendBoardState', monopolyGame.boardState());
   });
 
-  socket.on('initiateTrade', function(){});//figure out trading.  simple to-from, this-for-that request?  counter trading?  >2 user trading, send conditions of trade to all users for acceptance?
+  socket.on('initiateTrade', () =>{});//figure out trading.  simple to-from, this-for-that request?  counter trading?  >2 user trading, send conditions of trade to all users for acceptance?
 
-  socket.on('initiateAuction', function(propertyID){
+  socket.on('initiateAuction', (propertyID) => {
     //check if owned.
     //auction function.  needs to broadcast details, receive highest bids.
   });
 
-  socket.on('useCard', function(card) {});
-  socket.on('disconnect', function(){});
+  socket.on('useCard', (card) => {});
+  socket.on('disconnect', () => {});
 });
-server.listen(3000, function(){
+server.listen(3000, () => {
   console.log('listening on *:3000');
 });
