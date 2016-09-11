@@ -9,6 +9,7 @@ export default class Player{
     this.jailFreeCards = null; //change to list or something;
     this.isJailed = false;
     this.doubles = null;//
+    this.railroadsOwned = null;
   }
 
   movePlayer(diceArray, boardLength){//DONE

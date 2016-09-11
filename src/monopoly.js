@@ -2,6 +2,7 @@ import BoardState from "./boardState";
 import Player from "./player";
 import fs from 'fs';
 import events from 'events';
+import {standardProperty, railroad, utility, eventCard, noEvent, go, goToJail, incomeTax, luxuryTax} from "./landOnFunctions";
 
 export default class Monopoly {
   constructor(){
@@ -32,7 +33,6 @@ export default class Monopoly {
 
   runGame(){
     this.cleanBoard();
-
     this.findFirstPlayer();
 
     this.emitter.on('nextPlayer', () => {
@@ -64,33 +64,39 @@ export default class Monopoly {
       this.toggleListenersOff();
 
       const diceArray = Monopoly.rollDice();
-      console.log('dice: ' + diceArray.reduce(( acc, cur ) => acc + cur, 0));//test
       activePlayer.movePlayer(diceArray, this.propertyArray.length);
-      activePlayer.money -= diceArray.reduce(( acc, cur ) => acc + cur, 0) * 10;//test
-      console.log('new position ' + activePlayer.position + '. funds left: ' + activePlayer.money);//test
-//      this.landOnFunction(activePlayer);TODO
 
-      if(diceArray.every(element => element == diceArray[0])){//probably too much.  allows for more than 2 dice
-        activePlayer.doubles++;
-        if(activePlayer.doubles >= 3){
-          activePlayer.doubles = 0;
-//          this.goToJail(activePlayer);
+      console.log('dice: ' + diceArray.reduce(( acc, cur ) => acc + cur, 0));//test
+      activePlayer.money -= diceArray.reduce(( acc, cur ) => acc + cur, 0) * 10;//test
+      console.log('new position ' + this.propertyArray[activePlayer.position].nameStr + '. funds left: ' + activePlayer.money);//test
+
+      this.emitter.once('finishTurn', () => {
+        if(diceArray.every(element => element == diceArray[0])){//probably too much.  allows for more than 2 dice
+          activePlayer.doubles++;
+          if(activePlayer.doubles >= 3){
+            activePlayer.doubles = 0;
+  //          this.goToJail(activePlayer);
+          }
+          else {
+            this.runTurn(activePlayer);
+            return this;
+          }
         }
         else {
-          this.runTurn(activePlayer);
-          return this;
+        activePlayer.doubles = 0;
         }
-      }
-      else {
-      activePlayer.doubles = 0;
-      }
 
-      this.currentPlayer++;//or next index or w.e. I use
-      if(this.currentPlayer >= this.playerArray.length){
-        this.currentPlayer = 0;
-      }
+        this.currentPlayer++;//or next index or w.e. I use
+        if(this.currentPlayer >= this.playerArray.length){
+          this.currentPlayer = 0;
+        }
 
-      this.emitter.emit('nextPlayer', () => {});
+        this.emitter.emit('nextPlayer', () => {});
+        return this;
+      });
+
+      this.propertyArray[activePlayer.position].landOnFunction(activePlayer, this.emitter);
+
       return this;
     });
 
@@ -110,7 +116,7 @@ export default class Monopoly {
   }//returns JSON boardState
 
   cleanBoard(){
-    this.propertyArray = JSON.parse(fs.readFileSync('properties.JSON'));
+    this.loadPropertyArray();
 //    this.chanceList = JSON.parse(fs.readFileSync('chance.JSON'));
 //    this.commChestList = JSON.parse(fs.readFileSync('communityChest.JSON'));
 
@@ -132,6 +138,41 @@ export default class Monopoly {
     });
     this.currentPlayer = highIndex;
     return this;
+  }
+
+  loadPropertyArray(){
+    this.propertyArray = JSON.parse(fs.readFileSync('properties.JSON'));
+    this.propertyArray.forEach((property) => {
+      switch (property.functionID) {
+        case 1:
+          property.landOnFunction = standardProperty;
+          break;
+        case 2:
+          property.landOnFunction = railroad;
+          break;
+        case 3:
+          property.landOnFunction = utility;
+          break;
+        case 4:
+          property.landOnFunction = eventCard;
+          break;
+        case 5:
+          property.landOnFunction = noEvent;
+          break;
+        case 6:
+          property.landOnFunction = go;
+          break;
+        case 7:
+          property.landOnFunction = goToJail;
+          break;
+        case 8:
+          property.landOnFunction = incomeTax;
+          break;
+        case 9:
+          property.landOnFunction = luxuryTax;
+          break;
+      }
+    });
   }
 
   resetPlayers(){
