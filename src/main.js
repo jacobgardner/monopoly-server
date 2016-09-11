@@ -15,12 +15,29 @@ io.on('connect', (socket) => {
 
   });
 
+  monopolyGame.emitter.on(('promptBuy' + socket.id), (property) => {
+    monopolyGame.toggleListenersOn();
+
+    socket.once('confirmBuy', () => {
+      monopolyGame.toggleListenersOff();
+      socket.removeAllListeners('declineBuy');
+
+      //TODO make payment, catch insufficient funds, add property.
+    });
+
+    socket.once('declineBuy', () => {
+      monopolyGame.toggleListenersOff();
+      socket.removeAllListeners('confirmBuy');
+      monopolyGame.emit('finishTurn');
+    });
+
+    io.to(socket.id).emit('promptBuy', property, monopolyGame.boardState());
+  });
+
   monopolyGame.emitter.on(('promptRoll' + socket.id), (activePlayer) => {
     socket.once('rollDice', () => {
       console.log('stuff');
       monopolyGame.emitter.emit('rollDice', () => {});
-
-      return this;
     });
     console.log('awaiting dice roll');
     io.to(activePlayer.socketID).emit('promptRoll', monopolyGame.boardState());
