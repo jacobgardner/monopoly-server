@@ -2,10 +2,10 @@ export {standardProperty, railroad, utility, eventCard, noEvent, go, goToJail, i
 
 function standardProperty(activePlayer, emitter){
   if(this.ownerID == null){
-    emitter.emit(('promptBuy' + activePlayer.socketID), this.position);
+    emitter.emit(`promptBuy${activePlayer.socketID}`, this, activePlayer);
   }
   else{
-    emitter.emit(('promptPayment' + activePlayer.socketID), this.ownerID, this.rent[houses]);
+    emitter.emit(`promptPayment${activePlayer.socketID}`, this.ownerID, activePlayer, this.rent[houses]);
   }
 
   return this;
@@ -13,16 +13,16 @@ function standardProperty(activePlayer, emitter){
 
 function railroad(activePlayer, emitter){
   if(this.ownerID == null){
-    emitter.emit(('promptBuy' + activePlayer.socketID), this.position);
+    emitter.emit(`promptBuy${activePlayer.socketID}`, this, activePlayer);
   }
-  esle{
-    emitter.emit(('promptPayment' + activePlayer.socketID), this.ownerID, this.rent[houses]);
+  else{
+    emitter.emit(`promptPayment${activePlayer.socketID}`, this.ownerID, activePlayer, this.rent[houses]);
   }
 }
 
 function utility(activePlayer, emitter){
   if(this.ownerID == null){
-    emitter.emit(('promptBuy' + activePlayer.socketID), this.position);
+    emitter.emit(`promptBuy${activePlayer.socketID}`, this.position);
   }
 }
 
@@ -47,11 +47,11 @@ function goToJail(activePlayer, emitter){
 }
 
 function incomeTax(activePlayer, emitter){
-  emitter.emit(('promptPayment' + activePlayer.socketID), -1, this.rent);
+  emitter.emit(`promptPayment${activePlayer.socketID}`, 'Bank', activePlayer, this.rent);
   return this;
 }
 
 function luxuryTax(activePlayer, emitter){
-  emitter.emit(('promptPayment' + activePlayer.socketID), -1, this.rent);
+  emitter.emit(`promptPayment${activePlayer.socketID}`, 'Bank', activePlayer, this.rent);
   return this;
 }

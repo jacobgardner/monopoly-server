@@ -3,13 +3,13 @@ export default class Player{
     this.person = name;
     this.registeredID = regID;
     this.socketID = socketID;
-    this.position = null;
-    this.money = null;
+    this.position = 0;
+    this.money = 0;
     this.propertiesOwned = new Array(0);
-    this.jailFreeCards = null; //change to list or something;
+    this.jailFreeCards = 0; //change to list or something;
     this.isJailed = false;
-    this.doubles = null;//
-    this.railroadsOwned = null;
+    this.doubles = 0;//
+    this.railroadsOwned = 0;
   }
 
   movePlayer(diceArray, boardLength){//DONE
