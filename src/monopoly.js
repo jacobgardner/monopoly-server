@@ -2,6 +2,7 @@ import BoardState from "./boardState";
 import Player from "./player";
 import fs from 'fs';
 import events from 'events';
+import randomjs from 'random-js';
 import {standardProperty, railroad, utility, eventCard, noEvent, go, goToJail, incomeTax, luxuryTax} from "./landOnFunctions";
 
 export default class Monopoly {
@@ -12,6 +13,7 @@ export default class Monopoly {
     this.playerArray = new Array(0);
     this.currentPlayer = null;
     this.emitter = new events();
+    this.random = new randomjs();
   }
 
   loadPlayer(name, regID, socketID){
@@ -75,7 +77,7 @@ export default class Monopoly {
           activePlayer.doubles++;
           if(activePlayer.doubles >= 3){
             activePlayer.doubles = 0;
-  //          this.goToJail(activePlayer);
+            activePlayer.goToJail();
           }
           else {
             this.runTurn(activePlayer);
@@ -126,52 +128,26 @@ export default class Monopoly {
   }
 
   findFirstPlayer(){//TODO what if ties occur
-    let highRoll = 0;
-    let highIndex = 0;
-
-    this.playerArray.forEach((thisPlayer, index) => {
-      const thisRoll = Monopoly.rollDice().reduce(( acc, cur ) => acc + cur, 0);
-      if(thisRoll > highRoll){
-        highRoll = thisRoll;
-        highIndex = index;
-      }
-    });
-    this.currentPlayer = highIndex;
-    return this;
+    this.random.shuffle(this.playerArray);
+    this.currentPlayer = 0;
   }
 
   loadPropertyArray(){
+    const PROPERTY_FUNCTIONS = {
+        'standardProperty': standardProperty,
+        'railroad': railroad,
+        'utility': utility,
+        'eventCard' : eventCard,
+        'noEvent' : noEvent,
+        'go' : go,
+        'goToJail' : goToJail,
+        'incomeTax' : incomeTax,
+        'luxuryTax' : luxuryTax
+    }
+
     this.propertyArray = JSON.parse(fs.readFileSync('properties.JSON'));
     this.propertyArray.forEach((property) => {
-      switch (property.functionID) {
-        case 1:
-          property.landOnFunction = standardProperty;
-          break;
-        case 2:
-          property.landOnFunction = railroad;
-          break;
-        case 3:
-          property.landOnFunction = utility;
-          break;
-        case 4:
-          property.landOnFunction = eventCard;
-          break;
-        case 5:
-          property.landOnFunction = noEvent;
-          break;
-        case 6:
-          property.landOnFunction = go;
-          break;
-        case 7:
-          property.landOnFunction = goToJail;
-          break;
-        case 8:
-          property.landOnFunction = incomeTax;
-          break;
-        case 9:
-          property.landOnFunction = luxuryTax;
-          break;
-      }
+      property.landOnFunction = PROPERTY_FUNCTIONS[property.functionID];
     });
   }
 
@@ -181,14 +157,14 @@ export default class Monopoly {
       thisPlayer.money = 1500;
       thisPlayer.propertiesOwned = new Array(0);
       thisPlayer.jailFreeCards = 0;
-      thisPlayer.isJailed = false;
+      thisPlayer.jailRolls = 0;
       thisPlayer.doubles = 0;
     });
     return this;
   }
 
   static rollDice(){//DONE
-    const arr = [1,2];
+    const arr = [1, 2];
 
     return arr.map(() => (Math.floor(Math.random() * 6) + 1));
   }

@@ -7,12 +7,20 @@ export default class Player{
     this.money = 0;
     this.propertiesOwned = new Array(0);
     this.jailFreeCards = 0; //change to list or something;
-    this.isJailed = false;
+    this.jailRolls = 0;
     this.doubles = 0;//
     this.railroadsOwned = 0;
   }
 
-  movePlayer(diceArray, boardLength){//DONE
+  goToJail(){
+    this.jailRolls = 3;
+    this.position = 9;
+
+    return this;
+  }
+
+  movePlayer(diceArray, boardLength){
+//
     this.position += diceArray.reduce(( acc, cur ) => acc + cur, 0);
     if(this.position >= boardLength){
       this.position -= boardLength;
