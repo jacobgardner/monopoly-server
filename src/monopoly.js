@@ -1,4 +1,5 @@
 import BoardState from "./boardState";
+import Dice from "./dice"
 import Player from "./player";
 import fs from 'fs';
 import events from 'events';
@@ -65,15 +66,15 @@ export default class Monopoly {
     this.emitter.once('rollDice', () => {
       this.toggleListenersOff();
 
-      const diceArray = Monopoly.rollDice();
+      const diceArray = new Dice(2, 6, this.random);
       activePlayer.movePlayer(diceArray, this.propertyArray.length);
 
-      console.log('dice: ' + diceArray.reduce(( acc, cur ) => acc + cur, 0));//test
-      activePlayer.money -= diceArray.reduce(( acc, cur ) => acc + cur, 0) * 10;//test
+      console.log('dice: ' + diceArray.sum());//test
+      activePlayer.money -= diceArray.sum();//test
       console.log('new position ' + this.propertyArray[activePlayer.position].nameStr + '. funds left: ' + activePlayer.money);//test
 
       this.emitter.once('finishTurn', () => {
-        if(diceArray.every(element => element == diceArray[0])){//probably too much.  allows for more than 2 dice
+        if(diceArray.isDoubles()){//probably too much.  allows for more than 2 dice
           activePlayer.doubles++;
           if(activePlayer.doubles >= 3){
             activePlayer.doubles = 0;
@@ -161,12 +162,6 @@ export default class Monopoly {
       thisPlayer.doubles = 0;
     });
     return this;
-  }
-
-  static rollDice(){//DONE
-    const arr = [1, 2];
-
-    return arr.map(() => (Math.floor(Math.random() * 6) + 1));
   }
 
   toggleListenersOn(){//TODO fill out functions
