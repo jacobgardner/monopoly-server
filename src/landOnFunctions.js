@@ -1,4 +1,14 @@
-export {standardProperty, railroad, utility, eventCard, noEvent, go, goToJail, incomeTax, luxuryTax};
+export {
+    standardProperty,
+    railroad,
+    utility,
+    eventCard,
+    noEvent,
+    go,
+    goToJail,
+    incomeTax,
+    luxuryTax,
+};
 
 function standardProperty(activePlayer, emitter){
     if(this.ownerID == null){
