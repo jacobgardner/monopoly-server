@@ -15,7 +15,7 @@ function standardProperty(activePlayer, emitter){
         emitter.emit(`promptBuy${activePlayer.socketID}`, this, activePlayer);
     }
     else{
-        emitter.emit(`promptPayment${activePlayer.socketID}`, this.ownerID, activePlayer, this.rent[houses]);
+        emitter.emit(`promptPayment${activePlayer.socketID}`, this.ownerID, activePlayer, this.rent[this.houses]);
     }
 
     return this;
@@ -26,7 +26,7 @@ function railroad(activePlayer, emitter){
         emitter.emit(`promptBuy${activePlayer.socketID}`, this, activePlayer);
     }
     else{
-        emitter.emit(`promptPayment${activePlayer.socketID}`, this.ownerID, activePlayer, this.rent[houses]);
+        emitter.emit(`promptPayment${activePlayer.socketID}`, this.ownerID, activePlayer, this.rent[this.houses]);
     }
 }
 
