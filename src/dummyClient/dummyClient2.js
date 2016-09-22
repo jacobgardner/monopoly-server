@@ -30,5 +30,5 @@ socket.on('connect', () => {
     fs.writeFileSync('client2BoardState.json', BoardState);
   });
 
-  socket.emit('register', 'Tim', 'q2p0O');
+  socket.emit('register', 'Tim', 'E2K3C');
 });
