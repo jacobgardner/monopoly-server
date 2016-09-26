@@ -1,17 +1,5 @@
-export {
-    standardProperty,
-    railroad,
-    utility,
-    eventCard,
-    noEvent,
-    go,
-    goToJail,
-    incomeTax,
-    luxuryTax,
-};
-
-function standardProperty(activePlayer, emitter){
-    if(this.ownerID == null){
+export function standardProperty(activePlayer, emitter){
+    if(this.ownerID === null){
         emitter.emit(`promptBuy${activePlayer.socketID}`, this, activePlayer);
     }
     else{
@@ -21,8 +9,8 @@ function standardProperty(activePlayer, emitter){
     return this;
 }
 
-function railroad(activePlayer, emitter){
-    if(this.ownerID == null){
+export function railroad(activePlayer, emitter){
+    if(this.ownerID === null){
         emitter.emit(`promptBuy${activePlayer.socketID}`, this, activePlayer);
     }
     else{
@@ -30,38 +18,38 @@ function railroad(activePlayer, emitter){
     }
 }
 
-function utility(activePlayer, emitter){
-    if(this.ownerID == null){
-        emitter.emit(`promptBuy${activePlayer.socketID}`, this.position);
+export function utility(activePlayer, emitter){
+    if(this.ownerID === null){
+        emitter.emit(`promptBuy${activePlayer.socketID}`, this, activePlayer);
     }
 }
 
-function eventCard(activePlayer, emitter){}
+export function eventCard(activePlayer, emitter){}
 
-function noEvent(activePlayer, emitter){
+export function noEvent(activePlayer, emitter){
     emitter.emit('finishTurn');
     return this;
 }
 
-function go(activePlayer, emitter){
+export function go(activePlayer, emitter){
     activePlayer.money += 200;
     emitter.emit('finishTurn');
     return this;
 }
 
-function goToJail(activePlayer, emitter){
+export function goToJail(activePlayer, emitter){
     activePlayer.position = 9;
     activePlayer.isJailed = true;
     emitter.emit('finishTurn');
     return this;
 }
 
-function incomeTax(activePlayer, emitter){
+export function incomeTax(activePlayer, emitter){
     emitter.emit(`promptPayment${activePlayer.socketID}`, 'Bank', activePlayer, this.rent);
     return this;
 }
 
-function luxuryTax(activePlayer, emitter){
+export function luxuryTax(activePlayer, emitter){
     emitter.emit(`promptPayment${activePlayer.socketID}`, 'Bank', activePlayer, this.rent);
     return this;
 }

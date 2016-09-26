@@ -23,7 +23,7 @@ export default class Monopoly {
         if(regArray.indexOf(regID) >= 0){
             this.playerArray.push(new Player(name, regID, socketID));
             console.log('Player ' + this.playerArray[this.playerArray.length - 1].person + ' added.');
-            if(regArray.length == this.playerArray.length){
+            if(regArray.length === this.playerArray.length){
                 console.log('runGame');
                 this.runGame();
                 return this;
@@ -69,12 +69,12 @@ export default class Monopoly {
             const diceArray = new Dice(2, 6, this.random);
             activePlayer.movePlayer(diceArray, this.propertyArray.length);
 
-            console.log('dice: ' + diceArray.sum());//test
-            activePlayer.money -= diceArray.sum();//test
+            console.log('dice: ' + diceArray.sum);//test
+            activePlayer.money -= diceArray.sum;//test
             console.log('new position ' + this.propertyArray[activePlayer.position].nameStr + '. funds left: ' + activePlayer.money);//test
 
             this.emitter.once('finishTurn', () => {
-                if(diceArray.isDoubles()){//probably too much.  allows for more than 2 dice
+                if(diceArray.isDoubles){
                     activePlayer.doubles++;
                     if(activePlayer.doubles >= 3){
                         activePlayer.doubles = 0;
@@ -120,8 +120,8 @@ export default class Monopoly {
 
     cleanBoard(){
         this.loadPropertyArray();
-  //    this.chanceList = JSON.parse(fs.readFileSync('chance.JSON'));
-  //    this.commChestList = JSON.parse(fs.readFileSync('communityChest.JSON'));
+  //    this.chanceList = JSON.parse(fs.readFileSync('chance.json'));
+  //    this.commChestList = JSON.parse(fs.readFileSync('communityChest.json'));
 
         this.resetPlayers();
 
@@ -146,7 +146,7 @@ export default class Monopoly {
             'luxuryTax' : luxuryTax,
         };
 
-        this.propertyArray = JSON.parse(fs.readFileSync('properties.JSON'));
+        this.propertyArray = JSON.parse(fs.readFileSync('properties.json'));
         this.propertyArray.forEach((property) => {
             property.landOnFunction = PROPERTY_FUNCTIONS[property.functionID];
         });
