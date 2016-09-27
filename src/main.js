@@ -11,8 +11,12 @@ io.on('connect', (socket) => {
     console.log(' connected');
 
     socket.on('register', (name, regID) => {
-        monopolyGame.loadPlayer(name, regID, socket.id);
-
+        monopolyGame.loadPlayer(socket.id, name, regID);
+        if(monopolyGame.playerArray.length === 2){
+            console.log('starting game');
+            eventListenersOn();
+            monopolyGame.runGame();
+        }
     });
 
     socket.on('getBoardState', () => {
@@ -20,58 +24,18 @@ io.on('connect', (socket) => {
         io.to(socket.id).emit('sendBoardState', monopolyGame.boardState());
     });
 
-    monopolyGame.emitter.on(`promptBuy${socket.id}`, (property, buyer) => {
-        monopolyGame.toggleListenersOn();
-
-        socket.once('confirmBuy', (bool) => {
-            monopolyGame.toggleListenersOff();
-
-            if(bool){
-                if(buyer.money < property.cost){
-                    io.to(socket.id).emit('msg', `insufficient funds, purchase of ${property.nameStr} cancelled`);//IDEA: keep track of round info to send and make game logs
-                }
-                else{
-                    buyer.money -= property.cost;
-                    buyer.propertiesOwned.push(property.nameStr);
-                    property.ownerID = buyer.registeredID;
-                }
-            }
-
-            monopolyGame.emitter.emit('finishTurn');
-            return this;
-        });
-
-        io.to(socket.id).emit('promptBuy', property, monopolyGame.boardState());
+    socket.on('confirmBuy', (bool) => {
+        monopolyGame.toggleListenersOff();
+        monopolyGame.emitter.emit(`confirmBuy`, io, bool);
     });
 
-    monopolyGame.emitter.on(`promptPayment${socket.id}`, (owner, renter, rent) => {
-        monopolyGame.toggleListenersOn();
-
-        monopolyGame.emitter.once('confirmPayment', () => {
-            monopolyGame.toggleListenersOff();
-
-            if(renter.money < rent){
-                io.to(socket.id).emit('msg', 'insufficient funds; liquidating assets');
-                monopolyGame.liquidateAssets(renter, rent);//TODO: handle bankruptcy
-            }
-
-            renter.money -= rent;
-            owner.money += rent;
-
-            monopolyGame.emitter.emit('finishTurn');
-            return this;
-        });
-
-        io.to(socket.id).emit('promptPayment', rent, monopolyGame.boardState());
+    socket.once('confirmPayment', () => {
+        monopolyGame.toggleListenersOff();
+        monopolyGame.emitter.emit('confirmPayment', io, monopolyGame);
     });
 
-    monopolyGame.emitter.on(`promptRoll${socket.id}`, (activePlayer) => {
-        socket.once('rollDice', () => {
-            console.log('stuff');
-            monopolyGame.emitter.emit('rollDice', () => {});
-        });
-        console.log('awaiting dice roll');
-        io.to(activePlayer.socketID).emit('promptRoll', monopolyGame.boardState());
+    socket.on('rollDice', () => {
+        monopolyGame.emitter.emit('rollDice', () => {});
     });
 
     socket.on('initiateTrade', () =>{});//figure out trading.  simple to-from, this-for-that request?  counter trading?  >2 user trading, send conditions of trade to all users for acceptance?
@@ -88,3 +52,25 @@ io.on('connect', (socket) => {
 server.listen(3000, () => {
     console.log('listening on *:3000');
 });
+
+function eventListenersOn() {
+    monopolyGame.emitter.on(`promptBuy`, (property, buyer) => {
+        monopolyGame.toggleListenersOn();
+
+        io.to(buyer.socketID).emit('promptBuy', property, monopolyGame.boardState());
+    });
+
+
+    monopolyGame.emitter.on(`promptPayment`, (owner, renter, rent) => {
+        monopolyGame.toggleListenersOn();
+
+        io.to(renter.socketID).emit('promptPayment', rent, monopolyGame.boardState());
+    });
+
+    monopolyGame.emitter.on(`promptRoll`, (activePlayer) => {
+        console.log(`awaiting dice roll`);
+        io.to(activePlayer.socketID).emit('promptRoll', monopolyGame.boardState());
+    });
+
+    return this;
+}

@@ -17,17 +17,17 @@ export default class Monopoly {
         this.random = new randomjs();
     }
 
-    loadPlayer(name, regID, socketID){
+    loadPlayer(socketID, name, regID){
         const regArray = JSON.parse(fs.readFileSync('./dist/regIDArray.json'));
         //TODO: Check for registered ID
         if(regArray.indexOf(regID) >= 0){
             this.playerArray.push(new Player(name, regID, socketID));
             console.log('Player ' + this.playerArray[this.playerArray.length - 1].person + ' added.');
-            if(regArray.length === this.playerArray.length){
+            /*if(regArray.length === this.playerArray.length){
                 console.log('runGame');
                 this.runGame();
                 return this;
-            }
+            }*/
             return this;
         }
         //TODO if all ID's are registered, runGame;
@@ -70,10 +70,10 @@ export default class Monopoly {
             activePlayer.movePlayer(diceArray, this.propertyArray.length);
 
             console.log('dice: ' + diceArray.sum);//test
-            activePlayer.money -= diceArray.sum;//test
-            console.log('new position ' + this.propertyArray[activePlayer.position].nameStr + '. funds left: ' + activePlayer.money);//test
+            console.log('new position ' + this.propertyArray[activePlayer.position].nameStr);//test
 
             this.emitter.once('finishTurn', () => {
+                console.log(`funds left: ${activePlayer.money}`);
                 if(diceArray.isDoubles){
                     activePlayer.doubles++;
                     if(activePlayer.doubles >= 3){
@@ -104,8 +104,8 @@ export default class Monopoly {
         });
 
         this.toggleListenersOn();
-        console.log('Toggling Listers\n promptRolls for ' + activePlayer.person);//test
-        this.emitter.emit(`promptRoll${activePlayer.socketID}` , activePlayer, () => {});
+        console.log('Toggling Listers\n promptRoll for ' + activePlayer.person);//test
+        this.emitter.emit(`promptRoll` , activePlayer);
     }
 
     boardState(){

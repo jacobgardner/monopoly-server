@@ -1,9 +1,45 @@
 export function standardProperty(activePlayer, emitter){
     if(this.ownerID === null){
-        emitter.emit(`promptBuy${activePlayer.socketID}`, this, activePlayer);
+        emitter.once(`confirmBuy`, (io, bool) => {
+            if(bool){
+                if(activePlayer.money < this.cost){
+                    io.to(activePlayer.socketID).emit('msg', `insufficient funds, purchase of ${this.nameStr} cancelled`);//IDEA: keep track of round info to send and make game logs
+                }
+                else{
+                    activePlayer.money -= this.cost;
+                    activePlayer.propertiesOwned.push(this.nameStr);
+                    this.ownerID = activePlayer.registeredID;
+                    this.houses = 0;
+                }
+            }
+
+            emitter.emit('finishTurn');
+            return this;
+        });
+
+        emitter.emit(`promptBuy`, this, activePlayer);
     }
     else{
-        emitter.emit(`promptPayment${activePlayer.socketID}`, this.ownerID, activePlayer, this.rent[this.houses]);
+        emitter.once('confirmPayment', (io, monopolyGame) => {
+            const owner = monopolyGame.playerArray.find((element) => {
+                return element.registeredID === this.ownerID;
+            });
+
+            if(activePlayer.money < this.rent[this.houses]){
+                io.to(activePlayer.socketID).emit('msg', 'insufficient funds; liquidating assets');
+                monopolyGame.liquidateAssets(activerPlayer, this.rent[this.houses]);//TODO: handle bankruptcy
+            }
+
+            activePlayer.money -= this.rent[this.houses];
+            if(owner.nameStr !== 'Bank'){
+                owner.money += this.rent[this.houses];
+            }
+
+            emitter.emit('finishTurn');
+            return this;
+        });
+
+        emitter.emit(`promptPayment`, this.ownerID, activePlayer, this.rent[this.houses]);
     }
 
     return this;
@@ -11,20 +47,73 @@ export function standardProperty(activePlayer, emitter){
 
 export function railroad(activePlayer, emitter){
     if(this.ownerID === null){
-        emitter.emit(`promptBuy${activePlayer.socketID}`, this, activePlayer);
+        emitter.once(`confirmBuy`, (bool, io) => {
+            if(bool){
+                if(activePlayer.money < this.cost){
+                    io.to(activePlayer.socketID).emit('msg', `insufficient funds, purchase of ${this.nameStr} cancelled`);//IDEA: keep track of round info to send and make game logs
+                }
+                else{
+                    activePlayer.money -= this.cost;
+                    activePlayer.propertiesOwned.push(this.nameStr);
+                    this.ownerID = activePlayer.registeredID;
+                }
+            }
+
+            emitter.emit('finishTurn');
+            return this;
+        });
+
+        emitter.emit(`promptBuy`, this, activePlayer);
     }
     else{
-        emitter.emit(`promptPayment${activePlayer.socketID}`, this.ownerID, activePlayer, this.rent[this.houses]);
+        emitter.once('confirmPayment', (io, monopolyGame) => {
+            const owner = monopolyGame.playerArray.find((element) => {
+                return element.registeredID === this.ownerID;
+            });
+
+            if(activePlayer.money < this.rent[this.houses]){
+                io.to(activePlayer.socketID).emit('msg', 'insufficient funds; liquidating assets');
+                monopolyGame.liquidateAssets(activerPlayer, this.rent[this.houses]);//TODO: handle bankruptcy
+            }
+
+            activePlayer.money -= this.rent[this.houses];
+            if(owner.nameStr !== 'Bank'){
+                owner.money += this.rent[this.houses];
+            }
+
+            emitter.emit('finishTurn');
+            return this;
+        });
+
+        emitter.emit(`promptPayment`, this.ownerID, activePlayer, this.rent[this.houses]);
     }
 }
 
 export function utility(activePlayer, emitter){
     if(this.ownerID === null){
-        emitter.emit(`promptBuy${activePlayer.socketID}`, this, activePlayer);
+        emitter.once(`confirmBuy`, (bool, io) => {
+            if(bool){
+                if(activePlayer.money < this.cost){
+                    io.to(activePlayer.socketID).emit('msg', `insufficient funds, purchase of ${this.nameStr} cancelled`);//IDEA: keep track of round info to send and make game logs
+                }
+                else{
+                    activePlayer.money -= this.cost;
+                    activePlayer.propertiesOwned.push(this.nameStr);
+                    this.ownerID = activePlayer.registeredID;
+                }
+            }
+
+            emitter.emit('finishTurn');
+            return this;
+        });
+
+        emitter.emit(`promptBuy`, this, activePlayer);
     }
 }
 
-export function eventCard(activePlayer, emitter){}
+export function eventCard(activePlayer, emitter){
+    emitter.emit('finishTurn');
+}
 
 export function noEvent(activePlayer, emitter){
     emitter.emit('finishTurn');
@@ -45,11 +134,49 @@ export function goToJail(activePlayer, emitter){
 }
 
 export function incomeTax(activePlayer, emitter){
-    emitter.emit(`promptPayment${activePlayer.socketID}`, 'Bank', activePlayer, this.rent);
+    emitter.once('confirmPayment', (io, monopolyGame) => {
+        const owner = monopolyGame.playerArray.find((element) => {
+            return element.registeredID === this.ownerID;
+        });
+
+        if(activePlayer.money < this.rent[this.houses]){
+            io.to(activePlayer.socketID).emit('msg', 'insufficient funds; liquidating assets');
+            monopolyGame.liquidateAssets(activerPlayer, this.rent[this.houses]);//TODO: handle bankruptcy
+        }
+
+        activePlayer.money -= this.rent[this.houses];
+        if(owner.nameStr !== 'Bank'){
+            owner.money += this.rent[this.houses];
+        }
+
+        emitter.emit('finishTurn');
+        return this;
+    });
+
+    emitter.emit(`promptPayment`, 'Bank', activePlayer, this.rent);
     return this;
 }
 
 export function luxuryTax(activePlayer, emitter){
-    emitter.emit(`promptPayment${activePlayer.socketID}`, 'Bank', activePlayer, this.rent);
+    emitter.once('confirmPayment', (io, monopolyGame) => {
+        const owner = monopolyGame.playerArray.find((element) => {
+            return element.registeredID === this.ownerID;
+        });
+
+        if(activePlayer.money < this.rent[this.houses]){
+            io.to(activePlayer.socketID).emit('msg', 'insufficient funds; liquidating assets');
+            monopolyGame.liquidateAssets(activerPlayer, this.rent[this.houses]);//TODO: handle bankruptcy
+        }
+
+        activePlayer.money -= this.rent[this.houses];
+        if(owner.nameStr !== 'Bank'){
+            owner.money += this.rent[this.houses];
+        }
+
+        emitter.emit('finishTurn');
+        return this;
+    });
+
+    emitter.emit(`promptPayment`, 'Bank', activePlayer, this.rent);
     return this;
 }
