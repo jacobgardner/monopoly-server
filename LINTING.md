@@ -31,7 +31,7 @@ from writing error-inducing code.
     - This is really just to make diffs cleaner.  If you're not touching the content on the line,
     then the line won't highlight in a diff.
  - Enforced semicolons
-    - Optional semicolons in javascript introduced to make javascript easier to approach for devs.
+    - Optional semicolons in javascript were introduced to make it easier to approach for new devs.
     This was probably the single biggest mistake of the javascript programming language.  This
     is because dealing with multi-line statements, chaining functions, etc. often need semi-colons
     to work properly or to just semantically understand where a chain ends.
