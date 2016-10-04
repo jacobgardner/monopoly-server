@@ -4,7 +4,7 @@ import Player from './player';
 import fs from 'fs';
 import events from 'events';
 import randomjs from 'random-js';
-import {standardProperty, railroad, utility, eventCard, noEvent, go, goToJail, incomeTax, luxuryTax} from './landOnFunctions';
+import {StandardProperty, Railroad, Utility, EventCard, NoEvent, Go, GoToJail, IncomeTax, LuxuryTax} from './properties';
 
 export default class Monopoly {
     constructor() {
@@ -132,22 +132,26 @@ export default class Monopoly {
     }
 
     loadPropertyArray() {
-        const PROPERTY_FUNCTIONS = {
-            'standardProperty': standardProperty,
-            'railroad': railroad,
-            'utility': utility,
-            'eventCard' : eventCard,
-            'noEvent' : noEvent,
-            'go' : go,
-            'goToJail' : goToJail,
-            'incomeTax' : incomeTax,
-            'luxuryTax' : luxuryTax,
+        this.propertyArray = new Array();
+
+        const PROPERTY_TYPES = {
+            'standardProperty' : StandardProperty,
+            'railroad': Railroad,
+            'utility': Utility,
+            'eventCard' : EventCard,
+            'noEvent' : NoEvent,
+            'go' : Go,
+            'goToJail' : GoToJail,
+            'incomeTax' : IncomeTax,
+            'luxuryTax' : LuxuryTax,
         };
 
-        this.propertyArray = JSON.parse(fs.readFileSync('properties.json'));
-        this.propertyArray.forEach((property) => {
-            property.landOnFunction = PROPERTY_FUNCTIONS[property.functionID];
-        });
+        const JSONArray = JSON.parse(fs.readFileSync('properties.json'));
+        for (let property of JSONArray) {
+            const cls = PROPERTY_TYPES[property.functionID];
+
+            this.propertyArray.push(new cls(property));
+        }
     }
 
     resetPlayers() {

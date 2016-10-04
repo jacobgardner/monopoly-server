@@ -25,7 +25,7 @@ export function standardProperty(activePlayer, emitter) {
 
             if (activePlayer.money < this.rent[this.houses]) {
                 io.to(activePlayer.socketID).emit('msg', 'insufficient funds; liquidating assets');
-                monopolyGame.liquidateAssets(activerPlayer, this.rent[this.houses]);//TODO: handle bankruptcy
+                monopolyGame.liquidateAssets(activePlayer, this.rent[this.houses]);//TODO: handle bankruptcy
             }
 
             activePlayer.money -= this.rent[this.houses];
@@ -69,7 +69,7 @@ export function railroad(activePlayer, emitter) {
 
             if (activePlayer.money < this.rent[this.houses]) {
                 io.to(activePlayer.socketID).emit('msg', 'insufficient funds; liquidating assets');
-                monopolyGame.liquidateAssets(activerPlayer, this.rent[this.houses]);//TODO: handle bankruptcy
+                monopolyGame.liquidateAssets(activePlayer, this.rent[this.houses]);//TODO: handle bankruptcy
             }
 
             activePlayer.money -= this.rent[this.houses];
@@ -130,19 +130,12 @@ export function goToJail(activePlayer, emitter) {
 
 export function incomeTax(activePlayer, emitter) {
     emitter.once('confirmPayment', (io, monopolyGame) => {
-        const owner = monopolyGame.playerArray.find((element) => {
-            return element.registeredID === this.ownerID;
-        });
-
-        if (activePlayer.money < this.rent[this.houses]) {
+        if (activePlayer.money < this.rent) {
             io.to(activePlayer.socketID).emit('msg', 'insufficient funds; liquidating assets');
-            monopolyGame.liquidateAssets(activerPlayer, this.rent[this.houses]);//TODO: handle bankruptcy
+            monopolyGame.liquidateAssets(activePlayer, this.rent);//TODO: handle bankruptcy
         }
 
-        activePlayer.money -= this.rent[this.houses];
-        if (owner.nameStr !== 'Bank') {
-            owner.money += this.rent[this.houses];
-        }
+        activePlayer.money -= this.rent;
 
         emitter.emit('finishTurn');
         return this;
@@ -154,19 +147,12 @@ export function incomeTax(activePlayer, emitter) {
 
 export function luxuryTax(activePlayer, emitter) {
     emitter.once('confirmPayment', (io, monopolyGame) => {
-        const owner = monopolyGame.playerArray.find((element) => {
-            return element.registeredID === this.ownerID;
-        });
-
-        if (activePlayer.money < this.rent[this.houses]) {
+        if (activePlayer.money < this.rent) {
             io.to(activePlayer.socketID).emit('msg', 'insufficient funds; liquidating assets');
-            monopolyGame.liquidateAssets(activerPlayer, this.rent[this.houses]);//TODO: handle bankruptcy
+            monopolyGame.liquidateAssets(activePlayer, this.rent);//TODO: handle bankruptcy
         }
 
-        activePlayer.money -= this.rent[this.houses];
-        if (owner.nameStr !== 'Bank') {
-            owner.money += this.rent[this.houses];
-        }
+        activePlayer.money -= this.rent;
 
         emitter.emit('finishTurn');
         return this;
