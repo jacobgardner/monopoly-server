@@ -12,7 +12,7 @@ io.on('connect', (socket) => {
 
     socket.on('register', (name, regID) => {
         monopolyGame.loadPlayer(socket.id, name, regID);
-        if(monopolyGame.playerArray.length === 2){
+        if (monopolyGame.playerArray.length === 2) {
             console.log('starting game');
             eventListenersOn();
             monopolyGame.runGame();
@@ -26,7 +26,7 @@ io.on('connect', (socket) => {
 
     socket.on('confirmBuy', (bool) => {
         monopolyGame.toggleListenersOff();
-        monopolyGame.emitter.emit(`confirmBuy`, io, bool);
+        monopolyGame.emitter.emit('confirmBuy', io, bool);
     });
 
     socket.once('confirmPayment', () => {
@@ -40,12 +40,12 @@ io.on('connect', (socket) => {
 
     socket.on('initiateTrade', () =>{});//figure out trading.  simple to-from, this-for-that request?  counter trading?  >2 user trading, send conditions of trade to all users for acceptance?
 
-    socket.on('initiateAuction', (propertyID) => {
+    socket.on('initiateAuction', () => {
       //check if owned.
       //auction function.  needs to broadcast details, receive highest bids.
     });
 
-    socket.on('useCard', (card) => {});
+    socket.on('useCard', () => {});
     socket.on('disconnect', () => {});
 });
 
@@ -54,21 +54,20 @@ server.listen(3000, () => {
 });
 
 function eventListenersOn() {
-    monopolyGame.emitter.on(`promptBuy`, (property, buyer) => {
+    monopolyGame.emitter.on('promptBuy', (property, buyer) => {
         monopolyGame.toggleListenersOn();
 
         io.to(buyer.socketID).emit('promptBuy', property, monopolyGame.boardState());
     });
 
-
-    monopolyGame.emitter.on(`promptPayment`, (owner, renter, rent) => {
+    monopolyGame.emitter.on('promptPayment', (owner, renter, rent) => {
         monopolyGame.toggleListenersOn();
 
         io.to(renter.socketID).emit('promptPayment', rent, monopolyGame.boardState());
     });
 
-    monopolyGame.emitter.on(`promptRoll`, (activePlayer) => {
-        console.log(`awaiting dice roll`);
+    monopolyGame.emitter.on('promptRoll', (activePlayer) => {
+        console.log('awaiting dice roll');
         io.to(activePlayer.socketID).emit('promptRoll', monopolyGame.boardState());
     });
 

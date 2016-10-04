@@ -7,7 +7,7 @@ import randomjs from 'random-js';
 import {standardProperty, railroad, utility, eventCard, noEvent, go, goToJail, incomeTax, luxuryTax} from './landOnFunctions';
 
 export default class Monopoly {
-    constructor(){
+    constructor() {
         this.propertyArray = null;
         this.chanceList = null;
         this.commChestList = null;
@@ -17,10 +17,10 @@ export default class Monopoly {
         this.random = new randomjs();
     }
 
-    loadPlayer(socketID, name, regID){
+    loadPlayer(socketID, name, regID) {
         const regArray = JSON.parse(fs.readFileSync('./dist/regIDArray.json'));
         //TODO: Check for registered ID
-        if(regArray.indexOf(regID) >= 0){
+        if (regArray.indexOf(regID) >= 0) {
             this.playerArray.push(new Player(name, regID, socketID));
             console.log('Player ' + this.playerArray[this.playerArray.length - 1].person + ' added.');
             /*if(regArray.length === this.playerArray.length){
@@ -34,16 +34,16 @@ export default class Monopoly {
         return this;
     }
 
-    runGame(){
+    runGame() {
         this.cleanBoard();
         this.findFirstPlayer();
 
         this.emitter.on('nextPlayer', () => {
-            if(this.playerArray.length <= 1){
+            if (this.playerArray.length <= 1) {
                 console.log(this.playerArray[0].person + ' wins');
                 return this; //end game
             }
-            if(this.playerArray[this.currentPlayer].money < 0){//test
+            if (this.playerArray[this.currentPlayer].money < 0) {//test
                 this.playerArray.splice(this.currentPlayer, 1);
                 this.emitter.emit('nextPlayer');
                 return this;
@@ -59,7 +59,7 @@ export default class Monopoly {
         //TODO add wincount;
     }
 
-    runTurn(activePlayer){
+    runTurn(activePlayer) {
       //const thisGame = this;//because 'this' breaks with the event
         console.log('runTurn for ' + activePlayer.person + '. Player position: ' + activePlayer.position);//test
 
@@ -74,23 +74,21 @@ export default class Monopoly {
 
             this.emitter.once('finishTurn', () => {
                 console.log(`funds left: ${activePlayer.money}`);
-                if(diceArray.isDoubles){
+                if (diceArray.isDoubles) {
                     activePlayer.doubles++;
-                    if(activePlayer.doubles >= 3){
+                    if (activePlayer.doubles >= 3) {
                         activePlayer.doubles = 0;
                         activePlayer.goToJail();
-                    }
-                    else {
+                    } else {
                         this.runTurn(activePlayer);
                         return this;
                     }
-                }
-                else {
+                } else {
                     activePlayer.doubles = 0;
                 }
 
                 this.currentPlayer++;//or next index or w.e. I use
-                if(this.currentPlayer >= this.playerArray.length){
+                if (this.currentPlayer >= this.playerArray.length) {
                     this.currentPlayer = 0;
                 }
 
@@ -105,10 +103,10 @@ export default class Monopoly {
 
         this.toggleListenersOn();
         console.log('Toggling Listers\n promptRoll for ' + activePlayer.person);//test
-        this.emitter.emit(`promptRoll` , activePlayer);
+        this.emitter.emit('promptRoll' , activePlayer);
     }
 
-    boardState(){
+    boardState() {
         const CurrentBoardState = new BoardState(this.propertyArray, this.playerArray, this.currentPlayer);
   //    CurrentBoardState.playerArray.forEach(function(thisPlayer){
   //      thisPlayer.socketID = null;//TODO this won't work, need to clone or just create new object....just a general idea.
@@ -118,7 +116,7 @@ export default class Monopoly {
         return JSON.stringify(CurrentBoardState, null, 2);
     }//returns JSON boardState
 
-    cleanBoard(){
+    cleanBoard() {
         this.loadPropertyArray();
   //    this.chanceList = JSON.parse(fs.readFileSync('chance.json'));
   //    this.commChestList = JSON.parse(fs.readFileSync('communityChest.json'));
@@ -128,12 +126,12 @@ export default class Monopoly {
         return this;
     }
 
-    findFirstPlayer(){//TODO what if ties occur
+    findFirstPlayer() {//TODO what if ties occur
         this.random.shuffle(this.playerArray);
         this.currentPlayer = 0;
     }
 
-    loadPropertyArray(){
+    loadPropertyArray() {
         const PROPERTY_FUNCTIONS = {
             'standardProperty': standardProperty,
             'railroad': railroad,
@@ -152,7 +150,7 @@ export default class Monopoly {
         });
     }
 
-    resetPlayers(){
+    resetPlayers() {
         this.playerArray.forEach((thisPlayer) => {
             thisPlayer.position = 0;
             thisPlayer.money = 1500;
@@ -164,7 +162,7 @@ export default class Monopoly {
         return this;
     }
 
-    toggleListenersOn(){//TODO fill out functions
+    toggleListenersOn() {//TODO fill out functions
         this.emitter.on('promptTrade',() => {});
         this.emitter.on('promptAuction', () => {});
         this.emitter.on('leaveJail', (methodUsed) => {});
@@ -173,7 +171,7 @@ export default class Monopoly {
         this.emitter.on('unmortgageProperty', (position) => {});
     }
 
-    toggleListenersOff(){
+    toggleListenersOff() {
         this.emitter.removeAllListeners('promptTrade');
         this.emitter.removeAllListeners('promptAuction');
         this.emitter.removeAllListeners('leaveJail');

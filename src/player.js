@@ -1,5 +1,5 @@
 export default class Player {
-    constructor(name, regID, socketID){//finish reading on WeakMaps for private props
+    constructor(name, regID, socketID) {//finish reading on WeakMaps for private props
         this.person = name;
         this.registeredID = regID;
         this.socketID = socketID;
@@ -12,17 +12,17 @@ export default class Player {
         this.railroadsOwned = 0;
     }
 
-    goToJail(){
+    goToJail() {
         this.jailRolls = 3;
         this.position = 9;
 
         return this;
     }
 
-    movePlayer(diceArray, boardLength){
+    movePlayer(diceArray, boardLength) {
   //
         this.position += diceArray.sum;
-        if(this.position >= boardLength){
+        if (this.position >= boardLength) {
             this.position -= boardLength;
         }
 
