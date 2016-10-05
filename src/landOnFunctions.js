@@ -1,3 +1,6 @@
+/*
+keeping incase I have somethign in here I needed
+
 export function standardProperty(activePlayer, emitter) {
     if (this.ownerID === null) {
         emitter.once('confirmBuy', (io, bool) => {
@@ -161,3 +164,4 @@ export function luxuryTax(activePlayer, emitter) {
     emitter.emit('promptPayment', 'Bank', activePlayer, this.rent);
     return this;
 }
+*/

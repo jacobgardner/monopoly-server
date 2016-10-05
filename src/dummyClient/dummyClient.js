@@ -17,13 +17,13 @@ socket.on('connect', () => {
         socket.emit('confirmPayment');
     });
 
-    socket.on('promptRoll', () => {
+    socket.on('promptRoll', (boardState) => {
         console.log('roll prompted');
-//    fs.writeFileSync('clientBoardState.json', BoardState);
+        fs.writeFileSync('clientBoardState_John.json', boardState);
         socket.emit('rollDice');
     });
 
-    socket.on('sendBoardState', (boardState) => {
+    socket.on('boardState', (boardState) => {
         console.log('boardState received');
         fs.writeFileSync('clientBoardState.json', boardState);
     });

@@ -64,11 +64,11 @@
   {
     "nameStr": "Income Tax",
     "cost": null,
-    "rent": 200,
+    "rent": [200],
     "houseCost": null,
     "mortgage": null,
-    "ownerID": null,
-    "houses": null,
+    "ownerID": "Bank",
+    "houses": 0,
     "isMortgaged": null,
     "isBuyable": false,
     "functionID": "incomeTax"
@@ -625,11 +625,11 @@
   {
     "nameStr": "Luxury Tax",
     "cost": null,
-    "rent": 75,
+    "rent": [75],
     "houseCost": null,
     "mortgage": null,
-    "ownerID": null,
-    "houses": null,
+    "ownerID": "Bank",
+    "houses": 0,
     "isMortgaged": null,
     "isBuyable": false,
     "functionID": "luxuryTax"

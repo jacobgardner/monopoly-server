@@ -59,7 +59,9 @@ export class Utility extends BaseProperty {
     }
 }
 
-export class EventCard extends BaseProperty {}
+export class EventCard extends BaseProperty {
+    landOnFunction(activePlayer, emitter) {}
+}
 
 export class NoEvent extends BaseProperty {
     landOnFunction(activePlayer, emitter) {
@@ -124,17 +126,17 @@ function confirmBuy(io, bool, activePlayer, emitter, property) {
 }
 
 function confirmPayment(io, monopolyGame, activePlayer, emitter, property) {
-    const owner = monopolyGame.playerArray.find((element) => {
-        return element.registeredID === property.ownerID;
-    });
-
     if (activePlayer.money < property.rent[property.houses]) {
         io.to(activePlayer.socketID).emit('msg', 'insufficient funds; liquidating assets');
         monopolyGame.liquidateAssets(activePlayer, property.rent[property.houses]);//TODO: handle bankruptcy
     }
 
     activePlayer.money -= property.rent[property.houses];
-    if (owner.nameStr !== 'Bank') {
+    if (property.ownerID !== 'Bank') {
+        const owner = monopolyGame.playerArray.find((element) => {
+            return element.registeredID === property.ownerID;
+        });
+
         owner.money += property.rent[property.houses];
     }
 

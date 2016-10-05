@@ -60,7 +60,6 @@ export default class Monopoly {
     }
 
     runTurn(activePlayer) {
-      //const thisGame = this;//because 'this' breaks with the event
         console.log('runTurn for ' + activePlayer.person + '. Player position: ' + activePlayer.position);//test
 
         this.emitter.once('rollDice', () => {
