@@ -64,13 +64,14 @@ export class Utility extends BaseProperty {
 
             emitter.emit('promptBuy', this, activePlayer);
         } else {
-            const rent = () => {
-                if (this.isMonopoly) {
-                    return diceArray.sum * 10;
+            let rent = 0;
+
+            if (this.isMonopoly) {
+                rent = diceArray.sum * 10;
                 } else {
-                    return diceArray.sum * 4;
-                }
-            };
+                rent = diceArray.sum * 4;
+            }
+
 
             emitter.once('confirmPayment', (io, monopolyGame) => {
                 if (activePlayer.money < rent) {
@@ -173,18 +174,27 @@ function confirmBuy(io, bool, activePlayer, emitter, property) {
 }
 
 function confirmPayment(io, monopolyGame, activePlayer, property) {
-    const rent = () => {
+/*    const rent = () => {
         if (property.houses === 0  && property.isMonopoly) {
-            return property.rent[this.houses] * 2;
+            return property.rent[property.houses] * 2;
         } else {
-            return this.rent[this.houses];
+            return property.rent[property.houses];
         }
-    };
+    };*/
+    let rent = 0;
+
+    if (property.houses === 0  && property.isMonopoly) {
+        rent = property.rent[property.houses] * 2;
+    } else {
+        rent = property.rent[property.houses];
+    }
+
     if (activePlayer.money < rent) {
         io.to(activePlayer.socketID).emit('msg', 'insufficient funds; liquidating assets');
         monopolyGame.liquidateAssets(activePlayer, rent);//TODO: handle bankruptcy
     }
 
+    console.log(rent);
     activePlayer.money -= rent;
 
     if (property.ownerID !== 'Bank') {
