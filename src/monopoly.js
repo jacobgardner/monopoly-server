@@ -95,7 +95,7 @@ export default class Monopoly {
                 return this;
             });
 
-            this.propertyArray[activePlayer.position].landOnFunction(activePlayer, this.emitter);
+            this.propertyArray[activePlayer.position].landOnFunction(this, diceArray);
 
             return this;
         });
@@ -146,7 +146,7 @@ export default class Monopoly {
         };
 
         const JSONArray = JSON.parse(fs.readFileSync('properties.json'));
-        for (let property of JSONArray) {
+        for (const property of JSONArray) {
             const cls = PROPERTY_TYPES[property.functionID];
 
             this.propertyArray.push(new cls(property));

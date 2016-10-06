@@ -7,9 +7,10 @@
     "mortgage": null,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": null,
-    "functionID": "go"
+    "functionID": "go",
+    "isMonopoly": false
   },
   {
     "nameStr": "Mediterranean Ave",
@@ -26,9 +27,10 @@
     "mortgage": 30,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": true,
-    "functionID": "standardProperty"
+    "functionID": "standardProperty",
+    "isMonopoly": false
   },
   {
     "nameStr": "Community Chest",
@@ -38,9 +40,10 @@
     "mortgage": null,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": false,
-    "functionID": "eventCard"
+    "functionID": "eventCard",
+    "isMonopoly": false
   },
   {
     "nameStr": "Baltic Ave",
@@ -57,21 +60,25 @@
     "mortgage": 30,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": true,
-    "functionID": "standardProperty"
+    "functionID": "standardProperty",
+    "isMonopoly": false
   },
   {
     "nameStr": "Income Tax",
     "cost": null,
-    "rent": [200],
+    "rent": [
+      200
+    ],
     "houseCost": null,
     "mortgage": null,
     "ownerID": "Bank",
     "houses": 0,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": false,
-    "functionID": "incomeTax"
+    "functionID": "incomeTax",
+    "isMonopoly": false
   },
   {
     "nameStr": "Reading RR",
@@ -86,9 +93,10 @@
     "mortgage": 100,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": true,
-    "functionID": "railroad"
+    "functionID": "railroad",
+    "isMonopoly": false
   },
   {
     "nameStr": "Oriental Ave",
@@ -105,9 +113,10 @@
     "mortgage": 50,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": true,
-    "functionID": "standardProperty"
+    "functionID": "standardProperty",
+    "isMonopoly": false
   },
   {
     "nameStr": "Chance",
@@ -117,9 +126,10 @@
     "mortgage": null,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": false,
-    "functionID": "eventCard"
+    "functionID": "eventCard",
+    "isMonopoly": false
   },
   {
     "nameStr": "Vermont Ave",
@@ -136,9 +146,10 @@
     "mortgage": 50,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": true,
-    "functionID": "standardProperty"
+    "functionID": "standardProperty",
+    "isMonopoly": false
   },
   {
     "nameStr": "Connecticut Ave",
@@ -155,9 +166,10 @@
     "mortgage": 60,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": true,
-    "functionID": "standardProperty"
+    "functionID": "standardProperty",
+    "isMonopoly": false
   },
   {
     "nameStr": "Jail",
@@ -167,9 +179,10 @@
     "mortgage": null,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": false,
-    "functionID": "noEvent"
+    "functionID": "noEvent",
+    "isMonopoly": false
   },
   {
     "nameStr": "St Charles Place",
@@ -186,9 +199,10 @@
     "mortgage": 70,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": true,
-    "functionID": "standardProperty"
+    "functionID": "standardProperty",
+    "isMonopoly": false
   },
   {
     "nameStr": "Electric Company",
@@ -198,9 +212,10 @@
     "mortgage": 75,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": true,
-    "functionID": "utility"
+    "functionID": "utility",
+    "isMonopoly": false
   },
   {
     "nameStr": "States Ave ",
@@ -217,9 +232,10 @@
     "mortgage": 70,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": true,
-    "functionID": "standardProperty"
+    "functionID": "standardProperty",
+    "isMonopoly": false
   },
   {
     "nameStr": "Virginia Ave",
@@ -236,9 +252,10 @@
     "mortgage": 80,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": true,
-    "functionID": "standardProperty"
+    "functionID": "standardProperty",
+    "isMonopoly": false
   },
   {
     "nameStr": "Pennsylvania RR",
@@ -253,9 +270,10 @@
     "mortgage": 100,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": true,
-    "functionID": "railroad"
+    "functionID": "railroad",
+    "isMonopoly": false
   },
   {
     "nameStr": "St James Pl",
@@ -272,9 +290,10 @@
     "mortgage": 90,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": true,
-    "functionID": "standardProperty"
+    "functionID": "standardProperty",
+    "isMonopoly": false
   },
   {
     "nameStr": "Community Chest",
@@ -284,9 +303,10 @@
     "mortgage": null,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": false,
-    "functionID": "eventCard"
+    "functionID": "eventCard",
+    "isMonopoly": false
   },
   {
     "nameStr": "Tennessee Ave",
@@ -303,9 +323,10 @@
     "mortgage": 90,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": true,
-    "functionID": "standardProperty"
+    "functionID": "standardProperty",
+    "isMonopoly": false
   },
   {
     "nameStr": "New York Ave",
@@ -322,9 +343,10 @@
     "mortgage": 100,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": true,
-    "functionID": "standardProperty"
+    "functionID": "standardProperty",
+    "isMonopoly": false
   },
   {
     "nameStr": "Free Parking",
@@ -334,9 +356,10 @@
     "mortgage": null,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": null,
-    "functionID": "noEvent"
+    "functionID": "noEvent",
+    "isMonopoly": false
   },
   {
     "nameStr": "Kentucky Ave",
@@ -353,9 +376,10 @@
     "mortgage": 110,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": true,
-    "functionID": "standardProperty"
+    "functionID": "standardProperty",
+    "isMonopoly": false
   },
   {
     "nameStr": "Chance",
@@ -365,9 +389,10 @@
     "mortgage": null,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": false,
-    "functionID": "eventCard"
+    "functionID": "eventCard",
+    "isMonopoly": false
   },
   {
     "nameStr": "Indiana Ave",
@@ -384,9 +409,10 @@
     "mortgage": 110,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": true,
-    "functionID": "standardProperty"
+    "functionID": "standardProperty",
+    "isMonopoly": false
   },
   {
     "nameStr": "Illinois Ave",
@@ -403,9 +429,10 @@
     "mortgage": 120,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": true,
-    "functionID": "standardProperty"
+    "functionID": "standardProperty",
+    "isMonopoly": false
   },
   {
     "nameStr": "B&O RR",
@@ -420,9 +447,10 @@
     "mortgage": 100,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": true,
-    "functionID": "railroad"
+    "functionID": "railroad",
+    "isMonopoly": false
   },
   {
     "nameStr": "Atlantic Ave",
@@ -439,9 +467,10 @@
     "mortgage": 130,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": true,
-    "functionID": "standardProperty"
+    "functionID": "standardProperty",
+    "isMonopoly": false
   },
   {
     "nameStr": "Ventnor Ave",
@@ -458,9 +487,10 @@
     "mortgage": 130,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": true,
-    "functionID": "standardProperty"
+    "functionID": "standardProperty",
+    "isMonopoly": false
   },
   {
     "nameStr": "Water Works",
@@ -470,9 +500,10 @@
     "mortgage": 75,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": true,
-    "functionID": "utility"
+    "functionID": "utility",
+    "isMonopoly": false
   },
   {
     "nameStr": "Marvin Gardens",
@@ -489,9 +520,10 @@
     "mortgage": 140,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": true,
-    "functionID": "standardProperty"
+    "functionID": "standardProperty",
+    "isMonopoly": false
   },
   {
     "nameStr": "Go To Jail",
@@ -501,9 +533,10 @@
     "mortgage": null,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": null,
-    "functionID": "goToJail"
+    "functionID": "goToJail",
+    "isMonopoly": false
   },
   {
     "nameStr": "Pacific Ave",
@@ -520,9 +553,10 @@
     "mortgage": 150,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": true,
-    "functionID": "standardProperty"
+    "functionID": "standardProperty",
+    "isMonopoly": false
   },
   {
     "nameStr": "North Carolina Ave",
@@ -539,9 +573,10 @@
     "mortgage": 150,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": true,
-    "functionID": "standardProperty"
+    "functionID": "standardProperty",
+    "isMonopoly": false
   },
   {
     "nameStr": "Community Chest",
@@ -551,9 +586,10 @@
     "mortgage": null,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": false,
-    "functionID": "eventCard"
+    "functionID": "eventCard",
+    "isMonopoly": false
   },
   {
     "nameStr": "Pennsylvania Ave",
@@ -570,9 +606,10 @@
     "mortgage": 160,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": true,
-    "functionID": "standardProperty"
+    "functionID": "standardProperty",
+    "isMonopoly": false
   },
   {
     "nameStr": "Short Line RR",
@@ -587,9 +624,10 @@
     "mortgage": 100,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": true,
-    "functionID": "railroad"
+    "functionID": "railroad",
+    "isMonopoly": false
   },
   {
     "nameStr": "Chance",
@@ -599,9 +637,10 @@
     "mortgage": null,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": false,
-    "functionID": "eventCard"
+    "functionID": "eventCard",
+    "isMonopoly": false
   },
   {
     "nameStr": "Park Place",
@@ -618,21 +657,25 @@
     "mortgage": 175,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": true,
-    "functionID": "standardProperty"
+    "functionID": "standardProperty",
+    "isMonopoly": false
   },
   {
     "nameStr": "Luxury Tax",
     "cost": null,
-    "rent": [75],
+    "rent": [
+      75
+    ],
     "houseCost": null,
     "mortgage": null,
     "ownerID": "Bank",
     "houses": 0,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": false,
-    "functionID": "luxuryTax"
+    "functionID": "luxuryTax",
+    "isMonopoly": false
   },
   {
     "nameStr": "Boardwalk",
@@ -649,8 +692,9 @@
     "mortgage": 200,
     "ownerID": null,
     "houses": null,
-    "isMortgaged": null,
+    "isMortgaged": false,
     "isBuyable": true,
-    "functionID": "standardProperty"
+    "functionID": "standardProperty",
+    "isMonopoly": false
   }
 ]

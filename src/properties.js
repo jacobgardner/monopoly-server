@@ -1,13 +1,15 @@
 class BaseProperty {
     constructor(object) {
-        for (let key in object) {
+        for (const key in object) {
             this[key] = object[key];
         }
     }
 }
 
 export class StandardProperty extends BaseProperty {
-    landOnFunction(activePlayer, emitter) {
+    landOnFunction({playerArray : playerArray, currentPlayer = currentPlayer, emitter: emitter}) {
+        const activePlayer = playerArray[currentPlayer];
+
         if (this.ownerID === null) {
             emitter.once('confirmBuy', (io, bool) => {
                 confirmBuy(io, bool, activePlayer, emitter, this);
@@ -16,10 +18,14 @@ export class StandardProperty extends BaseProperty {
             emitter.emit('promptBuy', this, activePlayer);
         } else {
             emitter.once('confirmPayment', (io, monopolyGame) => {
-                confirmPayment(io, monopolyGame, activePlayer, emitter, this);
+                confirmPayment(io, monopolyGame, activePlayer, this);
             });
 
-            emitter.emit('promptPayment', this.ownerID, activePlayer, this.rent[this.houses]);
+            if (this.houses === 0  && this.isMonopoly) {
+                emitter.emit('promptPayment', this.ownerID, activePlayer, this.rent[this.houses] * 2);
+            } else {
+                emitter.emit('promptPayment', this.ownerID, activePlayer, this.rent[this.houses]);
+            }
         }
 
         return this;
@@ -27,7 +33,9 @@ export class StandardProperty extends BaseProperty {
 }
 
 export class Railroad extends BaseProperty {
-    landOnFunction(activePlayer, emitter) {
+    landOnFunction({playerArray : playerArray, currentPlayer = currentPlayer, emitter: emitter}) {
+        const activePlayer = playerArray[currentPlayer];
+
         if (this.ownerID === null) {
             emitter.once('confirmBuy', (io, bool) => {
                 confirmBuy(io, bool, activePlayer, emitter, this);
@@ -36,7 +44,7 @@ export class Railroad extends BaseProperty {
             emitter.emit('promptBuy', this, activePlayer);
         } else {
             emitter.once('confirmPayment', (io, monopolyGame) => {
-                confirmPayment(io, monopolyGame, activePlayer, emitter, this);
+                confirmPayment(io, monopolyGame, activePlayer, this);
             });
 
             emitter.emit('promptPayment', this.ownerID, activePlayer, this.rent[this.houses]);
@@ -47,31 +55,67 @@ export class Railroad extends BaseProperty {
 }
 
 export class Utility extends BaseProperty {
-    landOnFunction(activePlayer, emitter) {
+    landOnFunction({playerArray : playerArray, currentPlayer = currentPlayer, emitter: emitter}, diceArray) {
+        const activePlayer = playerArray[currentPlayer];
         if (this.ownerID === null) {
             emitter.once('confirmBuy', (io, bool) => {
                 confirmBuy(io, bool, activePlayer, emitter, this);
             });
 
             emitter.emit('promptBuy', this, activePlayer);
+        } else {
+            const rent = () => {
+                if (this.isMonopoly) {
+                    return diceArray.sum * 10;
+                } else {
+                    return diceArray.sum * 4;
+                }
+            };
+
+            emitter.once('confirmPayment', (io, monopolyGame) => {
+                if (activePlayer.money < rent) {
+                    io.to(activePlayer.socketID).emit('msg', 'insufficient funds; liquidating assets');
+                    monopolyGame.liquidateAssets(activePlayer, rent);//TODO: handle bankruptcy
+                }
+
+                activePlayer.money -= rent;
+
+                const owner = monopolyGame.playerArray.find((element) => {
+                    return element.registeredID === this.ownerID;
+                });
+
+                owner.money += rent;
+
+                monopolyGame.emitter.emit('finishTurn');
+                return this;
+            });
+
+            emitter.emit('promptPayment', this.ownerID, activePlayer, rent);
+
         }
         //TODO else utility payments
     }
 }
 
 export class EventCard extends BaseProperty {
-    landOnFunction(activePlayer, emitter) {}
+    landOnFunction({playerArray : playerArray, currentPlayer = currentPlayer, emitter: emitter}) {
+        const activePlayer = playerArray[currentPlayer];
+        emitter.emit('finishTurn');
+        return this;
+    }
 }
 
 export class NoEvent extends BaseProperty {
-    landOnFunction(activePlayer, emitter) {
+    landOnFunction({playerArray : playerArray, currentPlayer = currentPlayer, emitter: emitter}) {
+        const activePlayer = playerArray[currentPlayer];
         emitter.emit('finishTurn');
         return this;
     }
 }
 
 export class Go extends BaseProperty {
-    landOnFunction(activePlayer, emitter) {
+    landOnFunction({playerArray : playerArray, currentPlayer = currentPlayer, emitter: emitter}) {
+        const activePlayer = playerArray[currentPlayer];
         activePlayer.money += 200;
         emitter.emit('finishTurn');
         return this;
@@ -79,7 +123,8 @@ export class Go extends BaseProperty {
 }
 
 export class GoToJail extends BaseProperty {
-    landOnFunction(activePlayer, emitter) {
+    landOnFunction({playerArray : playerArray, currentPlayer = currentPlayer, emitter: emitter}) {
+        const activePlayer = playerArray[currentPlayer];
         activePlayer.position = 9;
         activePlayer.isJailed = true;
         emitter.emit('finishTurn');
@@ -88,9 +133,10 @@ export class GoToJail extends BaseProperty {
 }
 
 export class IncomeTax extends BaseProperty {
-    landOnFunction(activePlayer, emitter) {
+    landOnFunction({playerArray : playerArray, currentPlayer = currentPlayer, emitter: emitter}) {
+        const activePlayer = playerArray[currentPlayer];
         emitter.once('confirmPayment', (io, monopolyGame) => {
-            confirmPayment(io, monopolyGame, activePlayer, emitter, this);
+            confirmPayment(io, monopolyGame, activePlayer, this);
         });
 
         emitter.emit('promptPayment', this.ownerID, activePlayer, this.rent[this.houses]);
@@ -99,9 +145,10 @@ export class IncomeTax extends BaseProperty {
 }
 
 export class LuxuryTax extends BaseProperty {
-    landOnFunction(activePlayer, emitter) {
+    landOnFunction({playerArray : playerArray, currentPlayer = currentPlayer, emitter: emitter}) {
+        const activePlayer = playerArray[currentPlayer];
         emitter.once('confirmPayment', (io, monopolyGame) => {
-            confirmPayment(io, monopolyGame, activePlayer, emitter, this);
+            confirmPayment(io, monopolyGame, activePlayer, this);
         });
 
         emitter.emit('promptPayment', this.ownerID, activePlayer, this.rent[this.houses]);
@@ -125,21 +172,29 @@ function confirmBuy(io, bool, activePlayer, emitter, property) {
     return this;
 }
 
-function confirmPayment(io, monopolyGame, activePlayer, emitter, property) {
-    if (activePlayer.money < property.rent[property.houses]) {
+function confirmPayment(io, monopolyGame, activePlayer, property) {
+    const rent = () => {
+        if (property.houses === 0  && property.isMonopoly) {
+            return property.rent[this.houses] * 2;
+        } else {
+            return this.rent[this.houses];
+        }
+    };
+    if (activePlayer.money < rent) {
         io.to(activePlayer.socketID).emit('msg', 'insufficient funds; liquidating assets');
-        monopolyGame.liquidateAssets(activePlayer, property.rent[property.houses]);//TODO: handle bankruptcy
+        monopolyGame.liquidateAssets(activePlayer, rent);//TODO: handle bankruptcy
     }
 
-    activePlayer.money -= property.rent[property.houses];
+    activePlayer.money -= rent;
+
     if (property.ownerID !== 'Bank') {
         const owner = monopolyGame.playerArray.find((element) => {
             return element.registeredID === property.ownerID;
         });
 
-        owner.money += property.rent[property.houses];
+        owner.money += rent;
     }
 
-    emitter.emit('finishTurn');
+    monopolyGame.emitter.emit('finishTurn');
     return this;
 }

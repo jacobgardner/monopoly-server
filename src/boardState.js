@@ -1,7 +1,7 @@
 export default class BoardState {
-    constructor(PropertyArray, PlayerArray, currentPlayer) {
-        this.PropertyArray = PropertyArray;
-        this.PlayerArray = PlayerArray;
+    constructor(propertyArray, playerArray, currentPlayer) {
+        this.propertyArray = propertyArray;
+        this.playerArray = playerArray;
         this.currentPlayer = currentPlayer;
     }
 }
