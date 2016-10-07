@@ -29,7 +29,7 @@ io.on('connect', (socket) => {
         monopolyGame.emitter.emit('confirmBuy', io, bool);
     });
 
-    socket.once('confirmPayment', () => {
+    socket.on('confirmPayment', () => {
         monopolyGame.toggleListenersOff();
         monopolyGame.emitter.emit('confirmPayment', io, monopolyGame);
     });

@@ -19,7 +19,7 @@ socket.on('connect', () => {
         boardState = JSON.parse(boardState);
 
         const me = boardState.playerArray.find((player) => {
-            return player.person === MY_NAME;
+            return player.nameStr === MY_NAME;
         });
         const property = boardState.propertyArray[me.position];
 

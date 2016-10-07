@@ -22,7 +22,7 @@ export default class Monopoly {
         //TODO: Check for registered ID
         if (regArray.indexOf(regID) >= 0) {
             this.playerArray.push(new Player(name, regID, socketID));
-            console.log('Player ' + this.playerArray[this.playerArray.length - 1].person + ' added.');
+            console.log('Player ' + this.playerArray[this.playerArray.length - 1].nameStr + ' added.');
             /*if(regArray.length === this.playerArray.length){
                 console.log('runGame');
                 this.runGame();
@@ -40,7 +40,7 @@ export default class Monopoly {
 
         this.emitter.on('nextPlayer', () => {
             if (this.playerArray.length <= 1) {
-                console.log(this.playerArray[0].person + ' wins');
+                console.log(this.playerArray[0].nameStr + ' wins');
                 return this; //end game
             }
             if (this.playerArray[this.currentPlayer].money < 0) {//test
@@ -60,7 +60,7 @@ export default class Monopoly {
     }
 
     runTurn(activePlayer) {
-        console.log('runTurn for ' + activePlayer.person + '. Player position: ' + activePlayer.position);//test
+        console.log('runTurn for ' + activePlayer.nameStr + '. Player position: ' + activePlayer.position);//test
 
         this.emitter.once('rollDice', () => {
             this.toggleListenersOff();
@@ -101,7 +101,7 @@ export default class Monopoly {
         });
 
         this.toggleListenersOn();
-        console.log('Toggling Listers\n promptRoll for ' + activePlayer.person);//test
+        console.log('Toggling Listers\n promptRoll for ' + activePlayer.nameStr);//test
         this.emitter.emit('promptRoll' , activePlayer);
     }
 

@@ -13,12 +13,16 @@ export class StandardProperty extends BaseProperty {
         if (this.ownerID === null) {
             emitter.once('confirmBuy', (io, bool) => {
                 confirmBuy(io, bool, activePlayer, emitter, this);
+
+                emitter.emit('finishTurn');
             });
 
             emitter.emit('promptBuy', this, activePlayer);
         } else {
             emitter.once('confirmPayment', (io, monopolyGame) => {
                 confirmPayment(io, monopolyGame, activePlayer, this);
+
+                emitter.emit('finishTurn');
             });
 
             if (this.houses === 0  && this.isMonopoly) {
@@ -39,12 +43,16 @@ export class Railroad extends BaseProperty {
         if (this.ownerID === null) {
             emitter.once('confirmBuy', (io, bool) => {
                 confirmBuy(io, bool, activePlayer, emitter, this);
+
+                emitter.emit('finishTurn');
             });
 
             emitter.emit('promptBuy', this, activePlayer);
         } else {
             emitter.once('confirmPayment', (io, monopolyGame) => {
                 confirmPayment(io, monopolyGame, activePlayer, this);
+
+                emitter.emit('finishTurn');
             });
 
             emitter.emit('promptPayment', this.ownerID, activePlayer, this.rent[this.houses]);
@@ -60,6 +68,8 @@ export class Utility extends BaseProperty {
         if (this.ownerID === null) {
             emitter.once('confirmBuy', (io, bool) => {
                 confirmBuy(io, bool, activePlayer, emitter, this);
+
+                emitter.emit('finishTurn');
             });
 
             emitter.emit('promptBuy', this, activePlayer);
@@ -68,7 +78,7 @@ export class Utility extends BaseProperty {
 
             if (this.isMonopoly) {
                 rent = diceArray.sum * 10;
-                } else {
+            } else {
                 rent = diceArray.sum * 4;
             }
 
@@ -126,8 +136,8 @@ export class Go extends BaseProperty {
 export class GoToJail extends BaseProperty {
     landOnFunction({playerArray : playerArray, currentPlayer = currentPlayer, emitter: emitter}) {
         const activePlayer = playerArray[currentPlayer];
-        activePlayer.position = 9;
-        activePlayer.isJailed = true;
+//        activePlayer.position = 9;
+//        activePlayer.isJailed = true;
         emitter.emit('finishTurn');
         return this;
     }
@@ -138,6 +148,8 @@ export class IncomeTax extends BaseProperty {
         const activePlayer = playerArray[currentPlayer];
         emitter.once('confirmPayment', (io, monopolyGame) => {
             confirmPayment(io, monopolyGame, activePlayer, this);
+
+            emitter.emit('finishTurn');
         });
 
         emitter.emit('promptPayment', this.ownerID, activePlayer, this.rent[this.houses]);
@@ -150,6 +162,8 @@ export class LuxuryTax extends BaseProperty {
         const activePlayer = playerArray[currentPlayer];
         emitter.once('confirmPayment', (io, monopolyGame) => {
             confirmPayment(io, monopolyGame, activePlayer, this);
+
+            emitter.emit('finishTurn');
         });
 
         emitter.emit('promptPayment', this.ownerID, activePlayer, this.rent[this.houses]);
@@ -169,7 +183,6 @@ function confirmBuy(io, bool, activePlayer, emitter, property) {
         }
     }
 
-    emitter.emit('finishTurn');
     return this;
 }
 
@@ -194,7 +207,7 @@ function confirmPayment(io, monopolyGame, activePlayer, property) {
         monopolyGame.liquidateAssets(activePlayer, rent);//TODO: handle bankruptcy
     }
 
-    console.log(rent);
+    console.log(`rent for ${activePlayer.nameStr} is ${rent}`);
     activePlayer.money -= rent;
 
     if (property.ownerID !== 'Bank') {
@@ -205,6 +218,5 @@ function confirmPayment(io, monopolyGame, activePlayer, property) {
         owner.money += rent;
     }
 
-    monopolyGame.emitter.emit('finishTurn');
     return this;
 }
