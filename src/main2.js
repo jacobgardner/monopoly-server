@@ -5,7 +5,7 @@ class Property {
         for (const key in object) {
             this[key] = object[key];
         }
-        this.isMonopoly = false;
+        this.colorKey = null;
     }
 }
 

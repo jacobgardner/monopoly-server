@@ -10,7 +10,8 @@
     "isMortgaged": false,
     "isBuyable": null,
     "functionID": "go",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": null
   },
   {
     "nameStr": "Mediterranean Ave",
@@ -30,7 +31,8 @@
     "isMortgaged": false,
     "isBuyable": true,
     "functionID": "standardProperty",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": "brown"
   },
   {
     "nameStr": "Community Chest",
@@ -43,7 +45,8 @@
     "isMortgaged": false,
     "isBuyable": false,
     "functionID": "eventCard",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": null
   },
   {
     "nameStr": "Baltic Ave",
@@ -63,7 +66,8 @@
     "isMortgaged": false,
     "isBuyable": true,
     "functionID": "standardProperty",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": "brown"
   },
   {
     "nameStr": "Income Tax",
@@ -78,7 +82,8 @@
     "isMortgaged": false,
     "isBuyable": false,
     "functionID": "incomeTax",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": null
   },
   {
     "nameStr": "Reading RR",
@@ -96,7 +101,8 @@
     "isMortgaged": false,
     "isBuyable": true,
     "functionID": "railroad",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": null
   },
   {
     "nameStr": "Oriental Ave",
@@ -116,7 +122,8 @@
     "isMortgaged": false,
     "isBuyable": true,
     "functionID": "standardProperty",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": "light blue"
   },
   {
     "nameStr": "Chance",
@@ -129,7 +136,8 @@
     "isMortgaged": false,
     "isBuyable": false,
     "functionID": "eventCard",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": null
   },
   {
     "nameStr": "Vermont Ave",
@@ -149,7 +157,8 @@
     "isMortgaged": false,
     "isBuyable": true,
     "functionID": "standardProperty",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": "light blue"
   },
   {
     "nameStr": "Connecticut Ave",
@@ -169,7 +178,8 @@
     "isMortgaged": false,
     "isBuyable": true,
     "functionID": "standardProperty",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": "light blue"
   },
   {
     "nameStr": "Jail",
@@ -182,7 +192,8 @@
     "isMortgaged": false,
     "isBuyable": false,
     "functionID": "noEvent",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": null
   },
   {
     "nameStr": "St Charles Place",
@@ -202,7 +213,8 @@
     "isMortgaged": false,
     "isBuyable": true,
     "functionID": "standardProperty",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": "purple"
   },
   {
     "nameStr": "Electric Company",
@@ -215,7 +227,8 @@
     "isMortgaged": false,
     "isBuyable": true,
     "functionID": "utility",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": null
   },
   {
     "nameStr": "States Ave ",
@@ -235,7 +248,8 @@
     "isMortgaged": false,
     "isBuyable": true,
     "functionID": "standardProperty",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": "purple"
   },
   {
     "nameStr": "Virginia Ave",
@@ -255,7 +269,8 @@
     "isMortgaged": false,
     "isBuyable": true,
     "functionID": "standardProperty",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": "purple"
   },
   {
     "nameStr": "Pennsylvania RR",
@@ -273,7 +288,8 @@
     "isMortgaged": false,
     "isBuyable": true,
     "functionID": "railroad",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": null
   },
   {
     "nameStr": "St James Pl",
@@ -293,7 +309,8 @@
     "isMortgaged": false,
     "isBuyable": true,
     "functionID": "standardProperty",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": "orange"
   },
   {
     "nameStr": "Community Chest",
@@ -306,7 +323,8 @@
     "isMortgaged": false,
     "isBuyable": false,
     "functionID": "eventCard",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": null
   },
   {
     "nameStr": "Tennessee Ave",
@@ -326,7 +344,8 @@
     "isMortgaged": false,
     "isBuyable": true,
     "functionID": "standardProperty",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": "orange"
   },
   {
     "nameStr": "New York Ave",
@@ -346,7 +365,8 @@
     "isMortgaged": false,
     "isBuyable": true,
     "functionID": "standardProperty",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": "orange"
   },
   {
     "nameStr": "Free Parking",
@@ -359,7 +379,8 @@
     "isMortgaged": false,
     "isBuyable": null,
     "functionID": "noEvent",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": null
   },
   {
     "nameStr": "Kentucky Ave",
@@ -379,7 +400,8 @@
     "isMortgaged": false,
     "isBuyable": true,
     "functionID": "standardProperty",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": "red"
   },
   {
     "nameStr": "Chance",
@@ -392,7 +414,8 @@
     "isMortgaged": false,
     "isBuyable": false,
     "functionID": "eventCard",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": null
   },
   {
     "nameStr": "Indiana Ave",
@@ -412,7 +435,8 @@
     "isMortgaged": false,
     "isBuyable": true,
     "functionID": "standardProperty",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": "red"
   },
   {
     "nameStr": "Illinois Ave",
@@ -432,7 +456,8 @@
     "isMortgaged": false,
     "isBuyable": true,
     "functionID": "standardProperty",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": "red"
   },
   {
     "nameStr": "B&O RR",
@@ -450,7 +475,8 @@
     "isMortgaged": false,
     "isBuyable": true,
     "functionID": "railroad",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": null
   },
   {
     "nameStr": "Atlantic Ave",
@@ -470,7 +496,8 @@
     "isMortgaged": false,
     "isBuyable": true,
     "functionID": "standardProperty",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": "yellow"
   },
   {
     "nameStr": "Ventnor Ave",
@@ -490,7 +517,8 @@
     "isMortgaged": false,
     "isBuyable": true,
     "functionID": "standardProperty",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": "yellow"
   },
   {
     "nameStr": "Water Works",
@@ -503,7 +531,8 @@
     "isMortgaged": false,
     "isBuyable": true,
     "functionID": "utility",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": null
   },
   {
     "nameStr": "Marvin Gardens",
@@ -523,7 +552,8 @@
     "isMortgaged": false,
     "isBuyable": true,
     "functionID": "standardProperty",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": "yellow"
   },
   {
     "nameStr": "Go To Jail",
@@ -536,7 +566,8 @@
     "isMortgaged": false,
     "isBuyable": null,
     "functionID": "goToJail",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": null
   },
   {
     "nameStr": "Pacific Ave",
@@ -556,7 +587,8 @@
     "isMortgaged": false,
     "isBuyable": true,
     "functionID": "standardProperty",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": "green"
   },
   {
     "nameStr": "North Carolina Ave",
@@ -576,7 +608,8 @@
     "isMortgaged": false,
     "isBuyable": true,
     "functionID": "standardProperty",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": "green"
   },
   {
     "nameStr": "Community Chest",
@@ -589,7 +622,8 @@
     "isMortgaged": false,
     "isBuyable": false,
     "functionID": "eventCard",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": null
   },
   {
     "nameStr": "Pennsylvania Ave",
@@ -609,7 +643,8 @@
     "isMortgaged": false,
     "isBuyable": true,
     "functionID": "standardProperty",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": "green"
   },
   {
     "nameStr": "Short Line RR",
@@ -627,7 +662,8 @@
     "isMortgaged": false,
     "isBuyable": true,
     "functionID": "railroad",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": null
   },
   {
     "nameStr": "Chance",
@@ -640,7 +676,8 @@
     "isMortgaged": false,
     "isBuyable": false,
     "functionID": "eventCard",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": null
   },
   {
     "nameStr": "Park Place",
@@ -660,7 +697,8 @@
     "isMortgaged": false,
     "isBuyable": true,
     "functionID": "standardProperty",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": "blue"
   },
   {
     "nameStr": "Luxury Tax",
@@ -675,7 +713,8 @@
     "isMortgaged": false,
     "isBuyable": false,
     "functionID": "luxuryTax",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": null
   },
   {
     "nameStr": "Boardwalk",
@@ -695,6 +734,7 @@
     "isMortgaged": false,
     "isBuyable": true,
     "functionID": "standardProperty",
-    "isMonopoly": false
+    "isMonopoly": false,
+    "colorKey": "blue"
   }
 ]

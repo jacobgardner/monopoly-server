@@ -20,8 +20,8 @@ export default class Player {
     }
 
     movePlayer(diceArray, boardLength) {
-//        this.position += 1;
-        this.position += diceArray.sum;
+        this.position += 1;
+//        this.position += diceArray.sum;
         if (this.position >= boardLength) {
             this.position -= boardLength;
         }

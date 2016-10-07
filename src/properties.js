@@ -187,7 +187,7 @@ function confirmBuy(io, bool, activePlayer, emitter, property) {
 }
 
 function confirmPayment(io, monopolyGame, activePlayer, property) {
-/*    const rent = () => {
+    /*const rent = () => {
         if (property.houses === 0  && property.isMonopoly) {
             return property.rent[property.houses] * 2;
         } else {

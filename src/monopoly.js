@@ -72,7 +72,10 @@ export default class Monopoly {
             console.log('new position ' + this.propertyArray[activePlayer.position].nameStr);//test
 
             this.emitter.once('finishTurn', () => {
-                console.log(`funds left: ${activePlayer.money}`);
+                console.log(`funds left for ${activePlayer.nameStr}: ${activePlayer.money}`);
+
+                this.checkMonopolies();
+
                 if (diceArray.isDoubles) {
                     activePlayer.doubles++;
                     if (activePlayer.doubles >= 3) {
@@ -114,6 +117,49 @@ export default class Monopoly {
 
         return JSON.stringify(CurrentBoardState, null, 2);
     }//returns JSON boardState
+
+    checkMonopolies() {
+        const standardPropertyArray = new Array();
+        const arrayOfColors = new Array();
+
+        for (const property of this.propertyArray) {//array of only standard properties
+            if (property.functionID === 'standardProperty') {
+                standardPropertyArray.push(property);
+            }
+        }
+
+        while (standardPropertyArray.length > 0) {//arrayOfColors should be and array of arrays that each carry only properies of one color type
+            const property = standardPropertyArray[0];
+            const color = property.colorKey;
+
+            arrayOfColors.push(new Array ());
+
+            let moreProperty = property;
+            while (standardPropertyArray.length > 0 && moreProperty.colorKey === color) {
+                standardPropertyArray.splice(0, 1);
+                arrayOfColors[arrayOfColors.length - 1].push(moreProperty);
+
+                moreProperty = standardPropertyArray[0];
+            }
+        }
+
+        //fs.writeFileSync('arrayOfColors.json', JSON.stringify(arrayOfColors, null, 2));
+
+        for (const colorArray of arrayOfColors) {
+            //fs.writeFileSync(`colorArray_${colorArray[0].colorKey}.json`, JSON.stringify(colorArray, null, 2));
+
+            if (colorArray.every(property => property.ownerId === colorArray[0].ownerId) && colorArray[0].ownerId !== null) {
+                for (const property of colorArray) {
+                    property.isMonopoly = true;
+                }
+            } else {
+                for (const property of colorArray) {
+                    property.isMonopoly = false;
+                }
+            }
+        }
+        return this;
+    }
 
     cleanBoard() {
         this.loadPropertyArray();
