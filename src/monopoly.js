@@ -146,8 +146,8 @@ export default class Monopoly {
         //fs.writeFileSync('arrayOfColors.json', JSON.stringify(arrayOfColors, null, 2));
 
         for (const colorArray of arrayOfColors) {
-            //fs.writeFileSync(`colorArray_${colorArray[0].colorKey}.json`, JSON.stringify(colorArray, null, 2));
-
+            fs.writeFileSync(`colorArray_${colorArray[0].colorKey}.json`, JSON.stringify(colorArray, null, 2));
+            console.log(`owner ${colorArray[0].ownerID} is not null: ${colorArray[0].ownerId !== null}`);
             if (colorArray.every(property => property.ownerId === colorArray[0].ownerId) && colorArray[0].ownerId !== null) {
                 for (const property of colorArray) {
                     property.isMonopoly = true;
