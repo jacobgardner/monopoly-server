@@ -4,18 +4,26 @@ import Monopoly from './monopoly';
 const monopoly = new Monopoly();
 
 monopoly.loadPropertyArray();
+const JSONArray = JSON.parse(fs.readFileSync('properties.json'));
 
+//fs.writeFileSync('testPropArray.json', JSON.stringify(monopoly.propertyArray, null, 2));
+for (const property of JSONArray) {
+    console.log(property.OwnerName, property.OwnerName);
+    console.log(`owner of ${property.nameStr}, ${property.OwnerName} is not null: ${property.OwnerName !== null}`);
 
-fs.writeFileSync('testPropArray.json', JSON.stringify(monopoly.propertyArray, null, 2));
-for (const property of monopoly.propertyArray) {
-    console.log(`owner of ${property.nameStr}, ${property.ownerID} is not null: ${property.ownerId !== null}`);
-
-    if (property.ownerId) {
+    if (property.OwnerName) {
         console.log('false');
     } else {
         console.log('true');
     }
 }
+const stuff = 'asdf';
+const qwer = null;
+
+console.log(`owner of ${stuff} is not null: ${stuff !== null}`);
+console.log(`owner of ${qwer} is not null: ${qwer !== null}`);
+
+
 
 /*class Property {
     constructor(object) {
