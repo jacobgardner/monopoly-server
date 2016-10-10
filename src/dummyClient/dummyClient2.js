@@ -1,6 +1,8 @@
 import fs from 'fs';
+import randomjs from 'random-js';
 
 const MY_NAME = 'tim';
+const random = new randomjs();
 var socket = require('socket.io-client')('http://localhost:3000');
 
 socket.on('connect', () => {
@@ -11,8 +13,13 @@ socket.on('connect', () => {
     });
 
     socket.on('promptBuy', (property) => {
-        console.log(`not buying ${property.nameStr}`);
-        socket.emit('confirmBuy', false);
+        if (random.bool()) {
+            console.log(`not buying ${property.nameStr}`);
+            socket.emit('confirmBuy', false);
+        } else {
+            console.log(`buying ${property.nameStr}`);
+            socket.emit('confirmBuy', true);
+        }
     });
 
     socket.on('promptPayment', (amount, boardState) => {

@@ -4,6 +4,7 @@ import Player from './player';
 import fs from 'fs';
 import events from 'events';
 import randomjs from 'random-js';
+import arrayFilterSort from './arrayFilterSort';
 import {StandardProperty, Railroad, Utility, EventCard, NoEvent, Go, GoToJail, IncomeTax, LuxuryTax} from './properties';
 
 export default class Monopoly {
@@ -11,10 +12,11 @@ export default class Monopoly {
         this.propertyArray = null;
         this.chanceList = null;
         this.commChestList = null;
-        this.playerArray = new Array(0);
+        this.playerArray = new Array();
         this.currentPlayer = null;
         this.emitter = new events();
         this.random = new randomjs();
+        this.testLog = new Array();
     }
 
     loadPlayer(socketID, name, regID) {
@@ -75,6 +77,8 @@ export default class Monopoly {
                 console.log(`funds left for ${activePlayer.nameStr}: ${activePlayer.money}`);
 
                 this.checkMonopolies();
+                this.checkRailroads();
+                this.checkUtilities();
 
                 if (diceArray.isDoubles) {
                     activePlayer.doubles++;
@@ -120,7 +124,6 @@ export default class Monopoly {
 
     checkMonopolies() {
         const standardPropertyArray = new Array();
-        const arrayOfColors = new Array();
 
         for (const property of this.propertyArray) {//array of only standard properties
             if (property.functionID === 'standardProperty') {
@@ -128,23 +131,11 @@ export default class Monopoly {
             }
         }
 
-        while (standardPropertyArray.length > 0) {//arrayOfColors should be and array of arrays that each carry only properies of one color type
-            const property = standardPropertyArray[0];
-            const color = property.colorKey;
-
-            arrayOfColors.push(new Array ());
-
-            let moreProperty = property;
-            while (standardPropertyArray.length > 0 && moreProperty.colorKey === color) {
-                standardPropertyArray.splice(0, 1);
-                arrayOfColors[arrayOfColors.length - 1].push(moreProperty);
-
-                moreProperty = standardPropertyArray[0];
-            }
-        }
+        const arrayOfColors = arrayFilterSort(standardPropertyArray, 'colorKey');
+        //fs.writeFileSync('arrayOfColors.json', JSON.stringify(arrayOfColors, null, 2));
 
         for (const colorArray of arrayOfColors) {
-            if (colorArray.every(property => property.OwnerName === colorArray[0].OwnerName) && colorArray[0].OwnerName !== null) {
+            if (colorArray.every(property => property.ownerName === colorArray[0].ownerName) && colorArray[0].ownerName !== null) {
                 for (const property of colorArray) {
                     property.isMonopoly = true;
                 }
@@ -154,8 +145,35 @@ export default class Monopoly {
                 }
             }
         }
+
         return this;
     }
+
+    checkRailroads() {
+        const railroadArray = new Array();
+
+        for (const property of this.propertyArray) {
+            if (property.functionID === 'railroad') {
+                railroadArray.push(property);
+            }
+        }
+
+        const arrayOfOwners = arrayFilterSort(railroadArray, 'ownerName');
+        this.testLog.push(arrayOfOwners);
+        //fs.writeFileSync('arrayOfOwners.json', JSON.stringify(arrayOfOwners, null, 2));
+
+        for (const ownerArray of arrayOfOwners) {
+            if (ownerArray[0].ownerName !== null) {
+                for (const property of ownerArray) {
+                    property.houses = ownerArray.length - 1;
+                }
+            }
+        }
+
+        return this;
+    }
+
+    checkUtilities() {}
 
     cleanBoard() {
         this.loadPropertyArray();

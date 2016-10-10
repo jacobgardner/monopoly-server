@@ -8,10 +8,10 @@ const JSONArray = JSON.parse(fs.readFileSync('properties.json'));
 
 //fs.writeFileSync('testPropArray.json', JSON.stringify(monopoly.propertyArray, null, 2));
 for (const property of JSONArray) {
-    console.log(property.OwnerName, property.OwnerName);
-    console.log(`owner of ${property.nameStr}, ${property.OwnerName} is not null: ${property.OwnerName !== null}`);
+    console.log(property.ownerName, property.ownerName);
+    console.log(`owner of ${property.nameStr}, ${property.ownerName} is not null: ${property.ownerName !== null}`);
 
-    if (property.OwnerName) {
+    if (property.ownerName) {
         console.log('false');
     } else {
         console.log('true');

@@ -2,7 +2,7 @@
 keeping incase I have somethign in here I needed
 
 export function standardProperty(activePlayer, emitter) {
-    if (this.OwnerName === null) {
+    if (this.ownerName === null) {
         emitter.once('confirmBuy', (io, bool) => {
             if (bool) {
                 if (activePlayer.money < this.cost) {
@@ -10,7 +10,7 @@ export function standardProperty(activePlayer, emitter) {
                 } else {
                     activePlayer.money -= this.cost;
                     activePlayer.propertiesOwned.push(this.nameStr);
-                    this.OwnerName = activePlayer.registeredID;
+                    this.ownerName = activePlayer.registeredID;
                     this.houses = 0;
                 }
             }
@@ -23,7 +23,7 @@ export function standardProperty(activePlayer, emitter) {
     } else {
         emitter.once('confirmPayment', (io, monopolyGame) => {
             const owner = monopolyGame.playerArray.find((element) => {
-                return element.registeredID === this.OwnerName;
+                return element.registeredID === this.ownerName;
             });
 
             if (activePlayer.money < this.rent[this.houses]) {
@@ -40,14 +40,14 @@ export function standardProperty(activePlayer, emitter) {
             return this;
         });
 
-        emitter.emit('promptPayment', this.OwnerName, activePlayer, this.rent[this.houses]);
+        emitter.emit('promptPayment', this.ownerName, activePlayer, this.rent[this.houses]);
     }
 
     return this;
 }
 
 export function railroad(activePlayer, emitter) {
-    if (this.OwnerName === null) {
+    if (this.ownerName === null) {
         emitter.once('confirmBuy', (bool, io) => {
             if (bool) {
                 if (activePlayer.money < this.cost) {
@@ -55,7 +55,7 @@ export function railroad(activePlayer, emitter) {
                 } else {
                     activePlayer.money -= this.cost;
                     activePlayer.propertiesOwned.push(this.nameStr);
-                    this.OwnerName = activePlayer.registeredID;
+                    this.ownerName = activePlayer.registeredID;
                 }
             }
 
@@ -67,7 +67,7 @@ export function railroad(activePlayer, emitter) {
     } else {
         emitter.once('confirmPayment', (io, monopolyGame) => {
             const owner = monopolyGame.playerArray.find((element) => {
-                return element.registeredID === this.OwnerName;
+                return element.registeredID === this.ownerName;
             });
 
             if (activePlayer.money < this.rent[this.houses]) {
@@ -84,12 +84,12 @@ export function railroad(activePlayer, emitter) {
             return this;
         });
 
-        emitter.emit('promptPayment', this.OwnerName, activePlayer, this.rent[this.houses]);
+        emitter.emit('promptPayment', this.ownerName, activePlayer, this.rent[this.houses]);
     }
 }
 
 export function utility(activePlayer, emitter) {
-    if (this.OwnerName === null) {
+    if (this.ownerName === null) {
         emitter.once('confirmBuy', (bool, io) => {
             if (bool) {
                 if (activePlayer.money < this.cost) {
@@ -97,7 +97,7 @@ export function utility(activePlayer, emitter) {
                 } else {
                     activePlayer.money -= this.cost;
                     activePlayer.propertiesOwned.push(this.nameStr);
-                    this.OwnerName = activePlayer.registeredID;
+                    this.ownerName = activePlayer.registeredID;
                 }
             }
 

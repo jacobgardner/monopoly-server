@@ -10,7 +10,7 @@ export class StandardProperty extends BaseProperty {
     landOnFunction({playerArray : playerArray, currentPlayer = currentPlayer, emitter: emitter}) {
         const activePlayer = playerArray[currentPlayer];
 
-        if (this.OwnerName === null) {
+        if (this.ownerName === null) {
             emitter.once('confirmBuy', (io, bool) => {
                 confirmBuy(io, bool, activePlayer, emitter, this);
 
@@ -26,9 +26,9 @@ export class StandardProperty extends BaseProperty {
             });
 
             if (this.houses === 0  && this.isMonopoly) {
-                emitter.emit('promptPayment', this.OwnerName, activePlayer, this.rent[this.houses] * 2);
+                emitter.emit('promptPayment', this.ownerName, activePlayer, this.rent[this.houses] * 2);
             } else {
-                emitter.emit('promptPayment', this.OwnerName, activePlayer, this.rent[this.houses]);
+                emitter.emit('promptPayment', this.ownerName, activePlayer, this.rent[this.houses]);
             }
         }
 
@@ -40,7 +40,7 @@ export class Railroad extends BaseProperty {
     landOnFunction({playerArray : playerArray, currentPlayer = currentPlayer, emitter: emitter}) {
         const activePlayer = playerArray[currentPlayer];
 
-        if (this.OwnerName === null) {
+        if (this.ownerName === null) {
             emitter.once('confirmBuy', (io, bool) => {
                 confirmBuy(io, bool, activePlayer, emitter, this);
 
@@ -55,7 +55,7 @@ export class Railroad extends BaseProperty {
                 emitter.emit('finishTurn');
             });
 
-            emitter.emit('promptPayment', this.OwnerName, activePlayer, this.rent[this.houses]);
+            emitter.emit('promptPayment', this.ownerName, activePlayer, this.rent[this.houses]);
         }
 
         return this;
@@ -65,7 +65,7 @@ export class Railroad extends BaseProperty {
 export class Utility extends BaseProperty {
     landOnFunction({playerArray : playerArray, currentPlayer = currentPlayer, emitter: emitter}, diceArray) {
         const activePlayer = playerArray[currentPlayer];
-        if (this.OwnerName === null) {
+        if (this.ownerName === null) {
             emitter.once('confirmBuy', (io, bool) => {
                 confirmBuy(io, bool, activePlayer, emitter, this);
 
@@ -92,7 +92,7 @@ export class Utility extends BaseProperty {
                 activePlayer.money -= rent;
 
                 const owner = monopolyGame.playerArray.find((element) => {
-                    return element.registeredID === this.OwnerName;
+                    return element.nameStr === this.ownerName;
                 });
 
                 owner.money += rent;
@@ -101,7 +101,7 @@ export class Utility extends BaseProperty {
                 return this;
             });
 
-            emitter.emit('promptPayment', this.OwnerName, activePlayer, rent);
+            emitter.emit('promptPayment', this.ownerName, activePlayer, rent);
 
         }
         //TODO else utility payments
@@ -152,7 +152,7 @@ export class IncomeTax extends BaseProperty {
             emitter.emit('finishTurn');
         });
 
-        emitter.emit('promptPayment', this.OwnerName, activePlayer, this.rent[this.houses]);
+        emitter.emit('promptPayment', this.ownerName, activePlayer, this.rent[this.houses]);
         return this;
     }
 }
@@ -166,7 +166,7 @@ export class LuxuryTax extends BaseProperty {
             emitter.emit('finishTurn');
         });
 
-        emitter.emit('promptPayment', this.OwnerName, activePlayer, this.rent[this.houses]);
+        emitter.emit('promptPayment', this.ownerName, activePlayer, this.rent[this.houses]);
         return this;
     }
 }
@@ -178,7 +178,7 @@ function confirmBuy(io, bool, activePlayer, emitter, property) {
         } else {
             activePlayer.money -= property.cost;
             activePlayer.propertiesOwned.push(property.nameStr);
-            property.OwnerName = activePlayer.registeredID;
+            property.ownerName = activePlayer.nameStr;
             property.houses = 0;
         }
     }
@@ -210,9 +210,9 @@ function confirmPayment(io, monopolyGame, activePlayer, property) {
     console.log(`rent for ${activePlayer.nameStr} is ${rent}`);
     activePlayer.money -= rent;
 
-    if (property.OwnerName !== 'Bank') {
+    if (property.ownerName !== 'Bank') {
         const owner = monopolyGame.playerArray.find((element) => {
-            return element.registeredID === property.OwnerName;
+            return element.nameStr === property.ownerName;
         });
 
         owner.money += rent;
