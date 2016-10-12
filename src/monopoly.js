@@ -132,7 +132,7 @@ export default class Monopoly {
         }
 
         const arrayOfColors = arrayFilterSort(standardPropertyArray, 'colorKey');
-        //fs.writeFileSync('arrayOfColors.json', JSON.stringify(arrayOfColors, null, 2));
+        fs.writeFileSync('arrayOfColors.json', JSON.stringify(arrayOfColors, null, 2));
 
         for (const colorArray of arrayOfColors) {
             if (colorArray.every(property => property.ownerName === colorArray[0].ownerName) && colorArray[0].ownerName !== null) {
@@ -160,7 +160,7 @@ export default class Monopoly {
 
         const arrayOfOwners = arrayFilterSort(railroadArray, 'ownerName');
         this.testLog.push(arrayOfOwners);
-        //fs.writeFileSync('arrayOfOwners.json', JSON.stringify(arrayOfOwners, null, 2));
+        fs.writeFileSync('arrayOfOwners.json', JSON.stringify(arrayOfOwners, null, 2));
 
         for (const ownerArray of arrayOfOwners) {
             if (ownerArray[0].ownerName !== null) {
@@ -173,7 +173,23 @@ export default class Monopoly {
         return this;
     }
 
-    checkUtilities() {}
+    checkUtilities() {
+        const utilityArray = new Array();
+
+        for (const property of this.propertyArray) {
+            if (property.functionID === 'utility') {
+                utilityArray.push(property);
+            }
+        }
+
+        if (utilityArray.every(property => property.ownerName === utilityArray[0].ownerName)) {
+            for (const property of utilityArray) {
+                property.isMonopoly = true;
+            }
+        }
+
+        return this;
+    }
 
     cleanBoard() {
         this.loadPropertyArray();
