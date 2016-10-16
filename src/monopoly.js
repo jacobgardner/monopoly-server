@@ -6,6 +6,7 @@ import events from 'events';
 import randomjs from 'random-js';
 import arrayFilterSort from './arrayFilterSort';
 import {StandardProperty, Railroad, Utility, EventCard, NoEvent, Go, GoToJail, IncomeTax, LuxuryTax} from './properties';
+import {advance, payment, GOoJF, move, jail, repairs} from './eventCards';
 
 export default class Monopoly {
     constructor() {
@@ -192,9 +193,11 @@ export default class Monopoly {
     }
 
     cleanBoard() {
-        this.loadPropertyArray();
-  //    this.chanceList = JSON.parse(fs.readFileSync('chance.json'));
-  //    this.commChestList = JSON.parse(fs.readFileSync('communityChest.json'));
+        this.propertyArray = this.loadJsonArray('properties.json');
+        this.chanceList = this.loadJsonArray('chance.json');
+        this.commChestList = this.loadJsonArray('communityChest.json');
+        this.random.shuffle(this.chanceList);
+        this.random.shuffle(this.commChestList);
 
         this.resetPlayers();
 
@@ -206,13 +209,13 @@ export default class Monopoly {
         this.currentPlayer = 0;
     }
 
-    loadPropertyArray() {
-        this.propertyArray = new Array();
+    loadJsonArray(inFile) {
+        const returnArray = new Array();
 
         const PROPERTY_TYPES = {
             'standardProperty' : StandardProperty,
-            'railroad': Railroad,
-            'utility': Utility,
+            'railroad' : Railroad,
+            'utility' : Utility,
             'eventCard' : EventCard,
             'noEvent' : NoEvent,
             'go' : Go,
@@ -221,12 +224,29 @@ export default class Monopoly {
             'luxuryTax' : LuxuryTax,
         };
 
-        const JSONArray = JSON.parse(fs.readFileSync('properties.json'));
-        for (const property of JSONArray) {
-            const cls = PROPERTY_TYPES[property.functionID];
+        const EVENT_CARDS = {
+            'advance' : advance,
+            'payment' : payment,
+            'GOoJF' : GOoJF,
+            'move' : move,
+            'jail' : jail,
+            'repairs' : repairs,
+        };
 
-            this.propertyArray.push(new cls(property));
+        let cls = null;
+        const JSONArray = JSON.parse(fs.readFileSync(inFile));
+
+        for (const obj of JSONArray) {
+            if (PROPERTY_TYPES.hasOwnProperty(obj.functionID)) {
+                cls = PROPERTY_TYPES[obj.functionID];
+            } else {
+                cls = EVENT_CARDS[obj.functionID];
+            }
+
+            returnArray.push(new cls(obj));
         }
+
+        return returnArray;
     }
 
     resetPlayers() {

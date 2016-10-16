@@ -33,7 +33,7 @@
     },
     {
         "nameStr": "Get out of Jail Free",
-        "functionID": "GOOJF",
+        "functionID": "GOoJF"
     },
     {
         "nameStr": "Go back 3 spaces",
@@ -42,6 +42,7 @@
     },
     {
         "nameStr": "Go to Jail",
+        "functionID": "jail"
     },
     {
         "nameStr": "Make general repairs on all your property",

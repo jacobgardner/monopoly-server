@@ -20,11 +20,11 @@
     },
     {
         "nameStr": "Get out of Jail Free",
-        "functionID": "GOOJF"
+        "functionID": "GOoJF"
     },
     {
         "nameStr": "Go to Jail",
-        "functionID": "jail",
+        "functionID": "jail"
     },
     {
         "nameStr": "Grand Opera Night.  Collect $50 from every player",
@@ -101,5 +101,5 @@
         "amount": 100,
         "from": "Bank",
         "to": "activePlayer"
-    },
+    }
 ]
