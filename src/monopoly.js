@@ -201,7 +201,7 @@ export default class Monopoly {
         return this;
     }
 
-    findFirstPlayer() {//TODO what if ties occur
+    findFirstPlayer() {
         this.random.shuffle(this.playerArray);
         this.currentPlayer = 0;
     }

@@ -1,0 +1,90 @@
+[
+    {
+        "nameStr": "Advance to Go",
+        "functionID": "advance",
+        "functionArg": "Go"
+    },
+    {
+        "nameStr": "Advance to Illinois Ave",
+        "functionID": "advance",
+        "functionArg": "Illinois Ave"
+    },
+    {
+        "nameStr": "Advance to St Charles Place",
+        "functionID": "advance",
+        "functionArg": "St Charles Place"
+    },
+    {
+        "nameStr": "Advance to nearest Utility",
+        "functionID": "advance",
+        "functionArg": "Utility"
+    },
+    {
+        "nameStr": "Advance to nearest Railroad",
+        "functionID": "advance",
+        "functionArg": "Railroad"
+    },
+    {
+        "nameStr": "Bank pays dividend of $50",
+        "functionID": "payment",
+        "amount": 50,
+        "from" : "Bank",
+        "to" : "activePlayer"
+    },
+    {
+        "nameStr": "Get out of Jail Free",
+        "functionID": "GOOJF",
+    },
+    {
+        "nameStr": "Go back 3 spaces",
+        "functionID": "move",
+        "functionArg": -3
+    },
+    {
+        "nameStr": "Go to Jail",
+    },
+    {
+        "nameStr": "Make general repairs on all your property",
+        "functionID": "repairs",
+        "perHouse": 25,
+        "perHotel": 100
+    },
+    {
+        "nameStr": "Pay poor tax of 15",
+        "functionID": "payment",
+        "amount": 15,
+        "from": "activePlayer",
+        "to": "Bank"
+    },
+    {
+        "nameStr": "Take a trip on the Reading Railroad",
+        "functionID": "advance",
+        "functionArg": "Reading RR"
+    },
+    {
+        "nameStr": "Take a walk on the Boardwalk",
+        "functionID": "advance",
+        "functionArg": "Boardwalk"
+    },
+    {
+        "nameStr": "Pay each player $50",
+        "functionID": "payment",
+        "amount": 50,
+        "from": "activePlayer",
+        "to": "allPlayers"
+    },
+    {
+        "nameStr": "Your loan matures.  Collect $150",
+        "functionID": "payment",
+        "amount": 150,
+        "from": "Bank",
+        "to": "activePlayer"
+    },
+    {
+        "nameStr": "Won crossword competition.  Collect $100",
+        "functionID": "payment",
+        "amount": 100,
+        "from": "Bank",
+        "to": "activePlayer"
+    }
+]

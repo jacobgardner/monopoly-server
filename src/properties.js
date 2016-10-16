@@ -104,7 +104,6 @@ export class Utility extends BaseProperty {
             emitter.emit('promptPayment', this.ownerName, activePlayer, rent);
 
         }
-        //TODO else utility payments
     }
 }
 
@@ -117,8 +116,7 @@ export class EventCard extends BaseProperty {
 }
 
 export class NoEvent extends BaseProperty {
-    landOnFunction({playerArray : playerArray, currentPlayer = currentPlayer, emitter: emitter}) {
-        const activePlayer = playerArray[currentPlayer];
+    landOnFunction({emitter: emitter}) {
         emitter.emit('finishTurn');
         return this;
     }
