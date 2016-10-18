@@ -2,7 +2,7 @@
     {
         "nameStr": "Advance to Go",
         "functionID": "advance",
-        "functionArg": "Go"
+        "functionArg": "go"
     },
     {
         "nameStr": "Advance to Illinois Ave",
@@ -17,12 +17,12 @@
     {
         "nameStr": "Advance to nearest Utility",
         "functionID": "advance",
-        "functionArg": "Utility"
+        "functionArg": "utility"
     },
     {
         "nameStr": "Advance to nearest Railroad",
         "functionID": "advance",
-        "functionArg": "Railroad"
+        "functionArg": "railroad"
     },
     {
         "nameStr": "Bank pays dividend of $50",

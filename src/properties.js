@@ -7,9 +7,7 @@ class BaseProperty {
 }
 
 export class StandardProperty extends BaseProperty {
-    landOnFunction({playerArray : playerArray, currentPlayer = currentPlayer, emitter: emitter}) {
-        const activePlayer = playerArray[currentPlayer];
-
+    landOnFunction({activePlayer : activePlayer, emitter: emitter}) {
         if (this.ownerName === null) {
             emitter.once('confirmBuy', (io, bool) => {
                 confirmBuy(io, bool, activePlayer, emitter, this);
@@ -37,9 +35,7 @@ export class StandardProperty extends BaseProperty {
 }
 
 export class Railroad extends BaseProperty {
-    landOnFunction({playerArray : playerArray, currentPlayer = currentPlayer, emitter: emitter}) {
-        const activePlayer = playerArray[currentPlayer];
-
+    landOnFunction({activePlayer : activePlayer, emitter: emitter}) {
         if (this.ownerName === null) {
             emitter.once('confirmBuy', (io, bool) => {
                 confirmBuy(io, bool, activePlayer, emitter, this);
@@ -63,8 +59,7 @@ export class Railroad extends BaseProperty {
 }
 
 export class Utility extends BaseProperty {
-    landOnFunction({playerArray : playerArray, currentPlayer = currentPlayer, emitter: emitter}, diceArray) {
-        const activePlayer = playerArray[currentPlayer];
+    landOnFunction({playerArray : playerArray, activePlayer : activePlayer, emitter: emitter}, diceArray) {
         if (this.ownerName === null) {
             emitter.once('confirmBuy', (io, bool) => {
                 confirmBuy(io, bool, activePlayer, emitter, this);
@@ -108,9 +103,20 @@ export class Utility extends BaseProperty {
 }
 
 export class EventCard extends BaseProperty {
-    landOnFunction({playerArray : playerArray, currentPlayer = currentPlayer, emitter: emitter}) {
-        const activePlayer = playerArray[currentPlayer];
-        emitter.emit('finishTurn');
+    landOnFunction(thisGame) {
+        let listsource = null;
+
+        if (this.nameStr === 'Community Chest') {
+            listsource = thisGame.commChestList;
+        } else if (this.nameStr === 'Chance') {
+            listsource = thisGame.chanceList;
+        }
+
+        const drawCard = listsource.shift();
+        drawCard.drawFunction(thisGame);
+        listsource.push(drawCard);
+
+        thisGame.emitter.emit('finishTurn');
         return this;
     }
 }
@@ -123,8 +129,7 @@ export class NoEvent extends BaseProperty {
 }
 
 export class Go extends BaseProperty {
-    landOnFunction({playerArray : playerArray, currentPlayer = currentPlayer, emitter: emitter}) {
-        const activePlayer = playerArray[currentPlayer];
+    landOnFunction({activePlayer : activePlayer, emitter: emitter}) {
         activePlayer.money += 200;
         emitter.emit('finishTurn');
         return this;
@@ -132,8 +137,7 @@ export class Go extends BaseProperty {
 }
 
 export class GoToJail extends BaseProperty {
-    landOnFunction({playerArray : playerArray, currentPlayer = currentPlayer, emitter: emitter}) {
-        const activePlayer = playerArray[currentPlayer];
+    landOnFunction({activePlayer : activePlayer, emitter: emitter}) {
 //        activePlayer.position = 9;
 //        activePlayer.isJailed = true;
         emitter.emit('finishTurn');
@@ -142,8 +146,7 @@ export class GoToJail extends BaseProperty {
 }
 
 export class IncomeTax extends BaseProperty {
-    landOnFunction({playerArray : playerArray, currentPlayer = currentPlayer, emitter: emitter}) {
-        const activePlayer = playerArray[currentPlayer];
+    landOnFunction({activePlayer : activePlayer, emitter: emitter}) {
         emitter.once('confirmPayment', (io, monopolyGame) => {
             confirmPayment(io, monopolyGame, activePlayer, this);
 
@@ -156,8 +159,7 @@ export class IncomeTax extends BaseProperty {
 }
 
 export class LuxuryTax extends BaseProperty {
-    landOnFunction({playerArray : playerArray, currentPlayer = currentPlayer, emitter: emitter}) {
-        const activePlayer = playerArray[currentPlayer];
+    landOnFunction({activePlayer : activePlayer, emitter: emitter}) {
         emitter.once('confirmPayment', (io, monopolyGame) => {
             confirmPayment(io, monopolyGame, activePlayer, this);
 

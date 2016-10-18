@@ -6,7 +6,7 @@ import events from 'events';
 import randomjs from 'random-js';
 import arrayFilterSort from './arrayFilterSort';
 import {StandardProperty, Railroad, Utility, EventCard, NoEvent, Go, GoToJail, IncomeTax, LuxuryTax} from './properties';
-import {advance, payment, GOoJF, move, jail, repairs} from './eventCards';
+import {Advance, Payment, GOoJF, Move, Jail, Repairs} from './eventCards';
 
 export default class Monopoly {
     constructor() {
@@ -18,6 +18,10 @@ export default class Monopoly {
         this.emitter = new events();
         this.random = new randomjs();
         this.testLog = new Array();
+    }
+
+    get activePlayer() {
+        return this.playerArray[this.currentPlayer];
     }
 
     loadPlayer(socketID, name, regID) {
@@ -46,12 +50,12 @@ export default class Monopoly {
                 console.log(this.playerArray[0].nameStr + ' wins');
                 return this; //end game
             }
-            if (this.playerArray[this.currentPlayer].money < 0) {//test
+            if (this.activePlayer.money < 0) {//test
                 this.playerArray.splice(this.currentPlayer, 1);
                 this.emitter.emit('nextPlayer');
                 return this;
             }
-            this.runTurn(this.playerArray[this.currentPlayer]);
+            this.runTurn(this.activePlayer);
 
             return this;
         });
@@ -62,36 +66,36 @@ export default class Monopoly {
         //TODO add wincount;
     }
 
-    runTurn(activePlayer) {
-        console.log('runTurn for ' + activePlayer.nameStr + '. Player position: ' + activePlayer.position);//test
+    runTurn() {
+        console.log('runTurn for ' + this.activePlayer.nameStr + '. Player position: ' + this.activePlayer.position);//test
 
         this.emitter.once('rollDice', () => {
             this.toggleListenersOff();
 
             const diceArray = new Dice(2, 6, this.random);
-            activePlayer.movePlayer(diceArray, this.propertyArray.length);
+            this.activePlayer.movePlayer(diceArray.sum, this.propertyArray.length);
 
             console.log('dice: ' + diceArray.sum);//test
-            console.log('new position ' + this.propertyArray[activePlayer.position].nameStr);//test
+            console.log('new position ' + this.propertyArray[this.activePlayer.position].nameStr);//test
 
             this.emitter.once('finishTurn', () => {
-                console.log(`funds left for ${activePlayer.nameStr}: ${activePlayer.money}`);
+                console.log(`funds left for ${this.activePlayer.nameStr}: ${this.activePlayer.money}`);
 
                 this.checkMonopolies();
                 this.checkRailroads();
                 this.checkUtilities();
 
                 if (diceArray.isDoubles) {
-                    activePlayer.doubles++;
-                    if (activePlayer.doubles >= 3) {
-                        activePlayer.doubles = 0;
-                        activePlayer.goToJail();
+                    this.activePlayer.doubles++;
+                    if (this.activePlayer.doubles >= 3) {
+                        this.activePlayer.doubles = 0;
+                        this.activePlayer.goToJail();
                     } else {
-                        this.runTurn(activePlayer);
+                        this.runTurn();
                         return this;
                     }
                 } else {
-                    activePlayer.doubles = 0;
+                    this.activePlayer.doubles = 0;
                 }
 
                 this.currentPlayer++;//or next index or w.e. I use
@@ -103,14 +107,14 @@ export default class Monopoly {
                 return this;
             });
 
-            this.propertyArray[activePlayer.position].landOnFunction(this, diceArray);
+            this.propertyArray[this.activePlayer.position].landOnFunction(this, diceArray);
 
             return this;
         });
 
         this.toggleListenersOn();
-        console.log('Toggling Listers\n promptRoll for ' + activePlayer.nameStr);//test
-        this.emitter.emit('promptRoll' , activePlayer);
+        console.log('Toggling Listers\n promptRoll for ' + this.activePlayer.nameStr);//test
+        this.emitter.emit('promptRoll' , this.activePlayer);
     }
 
     boardState() {
@@ -225,12 +229,12 @@ export default class Monopoly {
         };
 
         const EVENT_CARDS = {
-            'advance' : advance,
-            'payment' : payment,
+            'advance' : Advance,
+            'payment' : Payment,
             'GOoJF' : GOoJF,
-            'move' : move,
-            'jail' : jail,
-            'repairs' : repairs,
+            'move' : Move,
+            'jail' : Jail,
+            'repairs' : Repairs,
         };
 
         let cls = null;
