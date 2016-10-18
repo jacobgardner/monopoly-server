@@ -19,11 +19,12 @@ export default class Player {
         return this;
     }
 
-    movePlayer(diceArray, boardLength) {
+    movePlayer(amount, boardLength) {
         //this.position += 1;
-        this.position += diceArray.sum;
+        this.position += amount;
         if (this.position >= boardLength) {
             this.position -= boardLength;
+            this.money += 200;
         }
 
         return this;
