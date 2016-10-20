@@ -7,13 +7,13 @@ class BaseCard {
 }
 
 export class Advance extends BaseCard {
-    drawFunction({propertyArray : propertyArray, activePlayer : activePlayer}) {
+    drawFunction(thisGame) {
 
         let movePosition = null;
 
-        if (propertyArray.some(property => property.functionID === this.functionArg)) {//if advance to nearest property type (e.g. railroad, utility)
-            movePosition = propertyArray.findIndex((property, index) => {
-                if (index < activePlayer) {
+        if (thisGame.propertyArray.some(property => property.functionID === this.functionArg)) {//if advance to nearest property type (e.g. railroad, utility)
+            movePosition = thisGame.propertyArray.findIndex((property, index) => {
+                if (index < thisGame.activePlayer.position) {
                     return false;
                 }
 
@@ -21,24 +21,136 @@ export class Advance extends BaseCard {
             });
 
             if (movePosition < 0) {
-                movePosition = propertyArray.findIndex(property => property.functionID === this.functionArg);
+                movePosition = thisGame.propertyArray.findIndex(property => property.functionID === this.functionArg);
             }
         } else {
-            movePosition = propertyArray.findIndex((property) => {
+            movePosition = thisGame.propertyArray.findIndex((property) => {
                 return property.nameStr === this.functionArg;
             });
         }
 
-        let moveAmount = movePosition - activePlayer;
-        if (moveAmount < 0) {
-            moveAmount += propertyArray.length;
+        let moveAmount = movePosition - thisGame.activePlayer.position;
+
+        while (moveAmount < 0) {
+            moveAmount += thisGame.propertyArray.length;
         }
 
-        activePlayer.movePlayer(moveAmount, propertyArray.length);
+        thisGame.activePlayer.movePlayer(moveAmount, thisGame.propertyArray.length);
+        console.log(`card : ${this.nameStr}.  Moving ${moveAmount} spaces.\n new position ${thisGame.propertyArray[thisGame.activePlayer.position].nameStr}`);
+
+        thisGame[this.cardStack].push(this);
+        thisGame.emitter.emit('finishTurn');
+
+        return this;
     }
 }
-export class Payment extends BaseCard {}
-export class GOoJF extends BaseCard {}
-export class Move extends BaseCard {}
-export class Jail extends BaseCard {}
-export class Repairs extends BaseCard {}
+export class Payment extends BaseCard {
+    drawFunction(thisGame) {
+        console.log(`card: ${this.nameStr}`);
+
+        switch (this.from) {
+        case 'Bank':
+            thisGame.activePlayer.money += this.amount;
+
+            thisGame[this.cardStack].push(this);
+            thisGame.emitter.emit('finishTurn');
+            break;
+
+        case 'allPlayers':
+            for (const player of thisGame.playerArray) {
+                if (player !== thisGame.activePlayer) {
+
+                    thisGame.emitter.once('confirmPayment', (io, thisGame) => {
+                        if (player.money < this.amount) {
+                            io.to(player.socketID).emit('msg', 'insufficient funds; liquidating assets');
+                            thisGame.liquidateAssets(player, this.amount);//TODO: handle bankruptcy
+                        }
+
+                        player.money -= this.amount;
+                        thisGame.activePlayer.money += this.amount;
+
+                        thisGame[this.cardStack].push(this);
+                        thisGame.emitter.emit('finishTurn');
+                    });
+
+                    thisGame.emitter.emit('promptPayment', thisGame.activePlayer.nameStr, player, this.amount);
+                }
+            }
+
+            break;
+
+        case 'activePlayer':
+            if (this.to === 'Bank') {
+
+                thisGame.emitter.once('confirmPayment', (io, thisGame) => {
+                    if (thisGame.activePlayer.money < this.amount) {
+                        io.to(thisGame.activePlayer.socketID).emit('msg', 'insufficient funds; liquidating assets');
+                        thisGame.liquidateAssets(thisGame.activePlayer, this.amount);//TODO: handle bankruptcy
+                    }
+
+                    thisGame.activePlayer.money -= this.amount;
+
+                    thisGame[this.cardStack].push(this);
+                    thisGame.emitter.emit('finishTurn');
+                });
+
+                thisGame.emitter.emit('promptPayment', this.to, thisGame.activePlayer, this.amount);
+            } else {
+
+                thisGame.emitter.once('confirmPayment', (io, thisGame) => {
+                    if (thisGame.activePlayer.money < this.amount * (thisGame.playerArray.length - 1)) {
+                        io.to(thisGame.activePlayer.socketID).emit('msg', 'insufficient funds; liquidating assets');
+                        thisGame.liquidateAssets(thisGame.activePlayer, this.amount * (thisGame.playerArray.length - 1));//TODO: handle bankruptcy
+                    }
+
+                    for (const player of thisGame.playerArray) {
+                        if (player.nameStr !== thisGame.activePlayer) {
+                            thisGame.activePlayer.money -= this.amount;
+                            player.money += this.amount;
+                        }
+                    }
+
+                    thisGame[this.cardStack].push(this);
+                    thisGame.emitter.emit('finishTurn');
+                });
+
+                thisGame.emitter.emit('promptPayment', this.to, thisGame.activePlayer, this.amount + (thisGame.playerArray.length - 1));
+            }
+            break;
+        }
+
+        return this;
+    }
+}
+export class GOoJF extends BaseCard {
+    drawFunction(thisGame) {
+        console.log(`card "${this.nameStr}" is unfinished.`);
+        thisGame.emitter.emit('finishTurn');
+
+        return this;
+    }
+}
+export class Move extends BaseCard {
+    drawFunction(thisGame) {
+        console.log(`card "${this.nameStr}" is unfinished.`);
+        thisGame.emitter.emit('finishTurn');
+
+        return this;
+    }
+}
+export class Jail extends BaseCard {
+    drawFunction(thisGame) {
+        console.log(`card "${this.nameStr}" is unfinished.`);
+        thisGame.emitter.emit('finishTurn');
+
+        return this;
+    }
+}
+export class Repairs extends BaseCard {
+    drawFunction(thisGame) {
+        console.log(`card "${this.nameStr}" is unfinished.`);
+        thisGame.emitter.emit('finishTurn');
+
+        return this;
+    }
+}

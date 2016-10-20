@@ -20,11 +20,12 @@ export default class Player {
     }
 
     movePlayer(amount, boardLength) {
-        //this.position += 1;
+        //this.position = 36;
         this.position += amount;
         if (this.position >= boardLength) {
             this.position -= boardLength;
-            this.money += 200;
+            //this.money += 200;
+            console.log(`Adding $200 to ${this.nameStr}.  Funds left: ${this.money}.`);
         }
 
         return this;

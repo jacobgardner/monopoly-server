@@ -114,9 +114,7 @@ export class EventCard extends BaseProperty {
 
         const drawCard = listsource.shift();
         drawCard.drawFunction(thisGame);
-        listsource.push(drawCard);
 
-        thisGame.emitter.emit('finishTurn');
         return this;
     }
 }
@@ -187,13 +185,6 @@ function confirmBuy(io, bool, activePlayer, emitter, property) {
 }
 
 function confirmPayment(io, monopolyGame, activePlayer, property) {
-    /*const rent = () => {
-        if (property.houses === 0  && property.isMonopoly) {
-            return property.rent[property.houses] * 2;
-        } else {
-            return property.rent[property.houses];
-        }
-    };*/
     let rent = 0;
 
     if (property.houses === 0  && property.isMonopoly) {

@@ -1,31 +1,37 @@
 [
     {
         "nameStr": "Advance to Go",
+        "cardStack": "chanceList",
         "functionID": "advance",
         "functionArg": "go"
     },
     {
         "nameStr": "Advance to Illinois Ave",
+        "cardStack": "chanceList",
         "functionID": "advance",
         "functionArg": "Illinois Ave"
     },
     {
         "nameStr": "Advance to St Charles Place",
+        "cardStack": "chanceList",
         "functionID": "advance",
         "functionArg": "St Charles Place"
     },
     {
         "nameStr": "Advance to nearest Utility",
+        "cardStack": "chanceList",
         "functionID": "advance",
         "functionArg": "utility"
     },
     {
         "nameStr": "Advance to nearest Railroad",
+        "cardStack": "chanceList",
         "functionID": "advance",
         "functionArg": "railroad"
     },
     {
         "nameStr": "Bank pays dividend of $50",
+        "cardStack": "chanceList",
         "functionID": "payment",
         "amount": 50,
         "from" : "Bank",
@@ -33,25 +39,30 @@
     },
     {
         "nameStr": "Get out of Jail Free",
+        "cardStack": "chanceList",
         "functionID": "GOoJF"
     },
     {
         "nameStr": "Go back 3 spaces",
+        "cardStack": "chanceList",
         "functionID": "move",
         "functionArg": -3
     },
     {
         "nameStr": "Go to Jail",
+        "cardStack": "chanceList",
         "functionID": "jail"
     },
     {
         "nameStr": "Make general repairs on all your property",
+        "cardStack": "chanceList",
         "functionID": "repairs",
         "perHouse": 25,
         "perHotel": 100
     },
     {
-        "nameStr": "Pay poor tax of 15",
+        "nameStr": "Pay poor tax of $15",
+        "cardStack": "chanceList",
         "functionID": "payment",
         "amount": 15,
         "from": "activePlayer",
@@ -59,16 +70,19 @@
     },
     {
         "nameStr": "Take a trip on the Reading Railroad",
+        "cardStack": "chanceList",
         "functionID": "advance",
         "functionArg": "Reading RR"
     },
     {
         "nameStr": "Take a walk on the Boardwalk",
+        "cardStack": "chanceList",
         "functionID": "advance",
         "functionArg": "Boardwalk"
     },
     {
         "nameStr": "Pay each player $50",
+        "cardStack": "chanceList",
         "functionID": "payment",
         "amount": 50,
         "from": "activePlayer",
@@ -76,6 +90,7 @@
     },
     {
         "nameStr": "Your loan matures.  Collect $150",
+        "cardStack": "chanceList",
         "functionID": "payment",
         "amount": 150,
         "from": "Bank",
