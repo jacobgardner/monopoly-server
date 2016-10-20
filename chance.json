@@ -98,6 +98,7 @@
     },
     {
         "nameStr": "Won crossword competition.  Collect $100",
+        "cardStack": "chanceList",
         "functionID": "payment",
         "amount": 100,
         "from": "Bank",

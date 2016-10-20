@@ -124,17 +124,26 @@ export class Payment extends BaseCard {
 }
 export class GOoJF extends BaseCard {
     drawFunction(thisGame) {
-        console.log(`card "${this.nameStr}" is unfinished.`);
+        console.log(`card: "${this.nameStr}`);
+
+        thisGame.activePlayer.GOoJFArray.push(this);
         thisGame.emitter.emit('finishTurn');
 
         return this;
     }
+    //TODO useCard function
 }
 export class Move extends BaseCard {
     drawFunction(thisGame) {
-        console.log(`card "${this.nameStr}" is unfinished.`);
-        thisGame.emitter.emit('finishTurn');
+        console.log(`card: "${this.nameStr}"`);
 
+        thisGame.activePlayer.position += this.functionArg;
+        while (thisGame.activePlayer.position < 0) {
+            thisGame.activePlayer.position += thisGame.propertyArray.length;
+        }
+
+        thisGame[this.cardStack].push(this);
+        thisGame.emitter.emit('finishTurn');
         return this;
     }
 }

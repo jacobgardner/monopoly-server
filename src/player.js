@@ -5,8 +5,8 @@ export default class Player {
         this.socketID = socketID;
         this.position = 0;
         this.money = 0;
-        this.propertiesOwned = new Array(0);
-        this.jailFreeCards = 0; //change to list or something;
+        this.propertiesOwned = new Array();
+        this.GOoJFArray = new Array(); //change to list or something;
         this.jailRolls = 0;
         this.doubles = 0;//
         this.railroadsOwned = 0;
@@ -22,7 +22,7 @@ export default class Player {
     movePlayer(amount, boardLength) {
         //this.position = 36;
         this.position += amount;
-        if (this.position >= boardLength) {
+        while (this.position >= boardLength) {
             this.position -= boardLength;
             //this.money += 200;
             console.log(`Adding $200 to ${this.nameStr}.  Funds left: ${this.money}.`);

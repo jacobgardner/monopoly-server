@@ -30,11 +30,7 @@ export default class Monopoly {
         if (regArray.indexOf(regID) >= 0) {
             this.playerArray.push(new Player(name, regID, socketID));
             console.log('Player ' + this.playerArray[this.playerArray.length - 1].nameStr + ' added.');
-            /*if(regArray.length === this.playerArray.length){
-                console.log('runGame');
-                this.runGame();
-                return this;
-            }*/
+            
             return this;
         }
         //TODO if all ID's are registered, runGame;
