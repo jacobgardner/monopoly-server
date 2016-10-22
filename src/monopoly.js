@@ -18,6 +18,8 @@ export default class Monopoly {
         this.emitter = new events();
         this.random = new randomjs();
         this.testLog = new Array();
+        this.bankHouses = null;
+        this.bankHotels = null;
     }
 
     get activePlayer() {
@@ -30,7 +32,7 @@ export default class Monopoly {
         if (regArray.indexOf(regID) >= 0) {
             this.playerArray.push(new Player(name, regID, socketID));
             console.log('Player ' + this.playerArray[this.playerArray.length - 1].nameStr + ' added.');
-            
+
             return this;
         }
         //TODO if all ID's are registered, runGame;
@@ -133,7 +135,6 @@ export default class Monopoly {
         }
 
         const arrayOfColors = arrayFilterSort(standardPropertyArray, 'colorKey');
-        fs.writeFileSync('arrayOfColors.json', JSON.stringify(arrayOfColors, null, 2));
 
         for (const colorArray of arrayOfColors) {
             if (colorArray.every(property => property.ownerName === colorArray[0].ownerName) && colorArray[0].ownerName !== null) {
@@ -160,8 +161,6 @@ export default class Monopoly {
         }
 
         const arrayOfOwners = arrayFilterSort(railroadArray, 'ownerName');
-        this.testLog.push(arrayOfOwners);
-        fs.writeFileSync('arrayOfOwners.json', JSON.stringify(arrayOfOwners, null, 2));
 
         for (const ownerArray of arrayOfOwners) {
             if (ownerArray[0].ownerName !== null) {
@@ -193,6 +192,8 @@ export default class Monopoly {
     }
 
     cleanBoard() {
+        this.bankHouses = 32;
+        this.bankHotels = 12;
         this.propertyArray = this.loadJsonArray('properties.json');
         this.chanceList = this.loadJsonArray('chance.json');
         this.commChestList = this.loadJsonArray('communityChest.json');
@@ -253,7 +254,7 @@ export default class Monopoly {
         this.playerArray.forEach((thisPlayer) => {
             thisPlayer.position = 0;
             thisPlayer.money = 1500;
-            thisPlayer.propertiesOwned = new Array(0);
+            thisPlayer.propertiesOwnedArray = new Array(0);
             thisPlayer.jailFreeCards = 0;
             thisPlayer.jailRolls = 0;
             thisPlayer.doubles = 0;

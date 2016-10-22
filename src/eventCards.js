@@ -124,7 +124,7 @@ export class Payment extends BaseCard {
 }
 export class GOoJF extends BaseCard {
     drawFunction(thisGame) {
-        console.log(`card: "${this.nameStr}`);
+        console.log(`card: ${this.nameStr}`);
 
         thisGame.activePlayer.GOoJFArray.push(this);
         thisGame.emitter.emit('finishTurn');
@@ -157,7 +157,36 @@ export class Jail extends BaseCard {
 }
 export class Repairs extends BaseCard {
     drawFunction(thisGame) {
-        console.log(`card "${this.nameStr}" is unfinished.`);
+        console.log(`card: ${this.nameStr}`);
+        let houses = 0,
+            hotels = 0;
+
+        for (const property of thisGame.activePlayer.propertiesOwnedArray) {
+            if (property.houses > 4) {
+                hotels += 1;
+            } else {
+                houses += property.houses;
+            }
+        }
+
+        const paymentAmount = houses * this.perHouse + hotels + this.perHotel;
+        console.log(`Paying $${paymentAmount} for ${houses} houses and ${hotels} hotels`);
+
+        thisGame.emitter.once('confirmPayment', (io, thisGame) => {
+            if (thisGame.activePlayer.money < paymentAmount) {
+                io.to(thisGame.activePlayer.socketID).emit('msg', 'insufficient funds; liquidating assets');
+                thisGame.liquidateAssets(thisGame.activePlayer, paymentAmount);//TODO: handle bankruptcy
+            }
+
+            thisGame.activePlayer.money -= paymentAmount;
+
+            thisGame[this.cardStack].push(this);
+            thisGame.emitter.emit('finishTurn');
+        });
+
+        thisGame.emitter.emit('promptPayment', 'Bank', thisGame.activePlayer, paymentAmount);
+
+        thisGame[this.cardStack].push(this);
         thisGame.emitter.emit('finishTurn');
 
         return this;

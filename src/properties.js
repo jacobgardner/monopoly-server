@@ -7,6 +7,8 @@ class BaseProperty {
 }
 
 export class StandardProperty extends BaseProperty {
+    const maxHouse = 4;
+
     landOnFunction({activePlayer : activePlayer, emitter: emitter}) {
         if (this.ownerName === null) {
             emitter.once('confirmBuy', (io, bool) => {
@@ -32,6 +34,21 @@ export class StandardProperty extends BaseProperty {
 
         return this;
     }
+
+    /*buildStructure(io, buildNumber, {activePlayer : activePlayer, bankHouses : bankHouses, bankHotels : bankHotels}, ) {
+        if(buildNumber)
+
+        if (buildNumber + this.houses > this.maxHouse + 1) {
+            io.to(activePlayer.socketID).emit('msg', 'Cannot build that many houses.  Build Cancelled');
+        } else if (buildNumber * this.houseCost > activePlayer.money) {
+            io.to(activePlayer.socketID).emit('msg', 'insufficient funds.  Build Cancelled');
+
+        } else {
+            activePlayer.money -= buildNumber * this.houseCost;
+            this.houses += buildNumber;
+
+        }
+    }*/
 }
 
 export class Railroad extends BaseProperty {
@@ -175,7 +192,7 @@ function confirmBuy(io, bool, activePlayer, emitter, property) {
             io.to(activePlayer.socketID).emit('msg', `insufficient funds, purchase of ${property.nameStr} cancelled`);//IDEA: keep track of round info to send and make game logs
         } else {
             activePlayer.money -= property.cost;
-            activePlayer.propertiesOwned.push(property.nameStr);
+            activePlayer.propertiesOwnedArray.push(property);
             property.ownerName = activePlayer.nameStr;
             property.houses = 0;
         }

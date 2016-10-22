@@ -5,7 +5,7 @@ export default class Player {
         this.socketID = socketID;
         this.position = 0;
         this.money = 0;
-        this.propertiesOwned = new Array();
+        this.propertiesOwnedArray = new Array();
         this.GOoJFArray = new Array(); //change to list or something;
         this.jailRolls = 0;
         this.doubles = 0;//
