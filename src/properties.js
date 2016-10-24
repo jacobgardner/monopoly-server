@@ -7,7 +7,10 @@ class BaseProperty {
 }
 
 export class StandardProperty extends BaseProperty {
-    const maxHouse = 4;
+    constructor (object) {
+        super(object);
+        this.MAX_HOUSE = 4;
+    }
 
     landOnFunction({activePlayer : activePlayer, emitter: emitter}) {
         if (this.ownerName === null) {
@@ -35,20 +38,68 @@ export class StandardProperty extends BaseProperty {
         return this;
     }
 
-    /*buildStructure(io, buildNumber, {activePlayer : activePlayer, bankHouses : bankHouses, bankHotels : bankHotels}, ) {
-        if(buildNumber)
+    buildStructure(io, {activePlayer : activePlayer, propertyArray : propertyArray, bankHouses : bankHouses, bankHotels : bankHotels}, ) {
+        const colorArray = propertyArray.filter((property) => {
+            if (property.nameStr === this.nameStr) {
+                return false;
+            }
+            return property.colorKey === this.colorKey;
+        });
 
-        if (buildNumber + this.houses > this.maxHouse + 1) {
-            io.to(activePlayer.socketID).emit('msg', 'Cannot build that many houses.  Build Cancelled');
-        } else if (buildNumber * this.houseCost > activePlayer.money) {
+        if (this.houses < this.MAX_HOUSE && this.bankHouses <= 0) {
+            io.to(activePlayer.socketID).emit('msg', 'Bank has no remaining houses.  Build Cancelled');
+        } else if (this.houses === this.MAX_HOUSE && this.bankHotels <= 0) {
+            io.to(activePlayer.socketID).emit('msg', 'Bank has no remaining hotels.  Build Cancelled');
+        } else if (this.houses > this.MAX_HOUSE) {
+            io.to(activePlayer.socketID).emit('msg', 'Property already has hotel.  Build Cancelled');
+        } else if (colorArray.includes(property => property.houses < this.houses)) {
+            io.to(activePlayer.socketID).emit('msg', 'Must follow Even Build Rule.  Build Cancelled');
+        } else if (this.houseCost > activePlayer.money) {
             io.to(activePlayer.socketID).emit('msg', 'insufficient funds.  Build Cancelled');
 
         } else {
-            activePlayer.money -= buildNumber * this.houseCost;
-            this.houses += buildNumber;
+            activePlayer.money -= this.houseCost;
+            this.houses += 1;
 
+            if (this.houses > this.MAX_HOUSE) {
+                bankHouses += 4;
+                bankHotels -= 1;
+            } else {
+                bankHouses -= 1;
+            }
         }
-    }*/
+
+        return this;
+    }
+
+    sellStructure(io, {propertyArray : propertyArray, activePlayer : activePlayer, bankHouses : bankHouses, bankHotels : bankHotels}) {
+        const colorArray = propertyArray.filter((property) => {
+            if (property.nameStr === this.nameStr) {
+                return false;
+            }
+            return property.colorKey === this.colorKey;
+        });
+
+        if (this.houses < 1) {
+            io.to(activePlayer.socketID).emit('msg', 'No houses to sell.  Sale Cancelled');
+        } else if (colorArray.includes(property => property.houses > this.houses)) {
+            io.to(activePlayer.socketID).emit('msg', 'Must follow Even Build Rule.  Sale Cancelled');
+        } else if (this.houses > this.MAX_HOUSE && bankHouses < this.MAX_HOUSE) {
+            io.to(activePlayer.socketID).emit('msg', 'No houses in bank.  Monopoly structures must be completely destroyed');
+
+        } else {
+            activePlayer.money += this.houseCost/2;
+            this.houses -= 1;
+            if (this.houses === this.MAX_HOUSE) {
+                bankHotels += 1;
+                bankHouses -= this.MAX_HOUSE;
+            } else {
+                bankHouses -= 1;
+            }
+        }
+
+        return this;
+    }
 }
 
 export class Railroad extends BaseProperty {
