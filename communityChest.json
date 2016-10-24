@@ -1,0 +1,121 @@
+[
+    {
+        "nameStr": "Advance to Go",
+        "cardStack": "commChestList",
+        "functionID": "advance",
+        "functionArg": "Go"
+    },
+    {
+        "nameStr": "Bank error in your favor.  Collect $200",
+        "cardStack": "commChestList",
+        "functionID": "payment",
+        "amount": 200,
+        "from": "Bank",
+        "to": "activePlayer"
+    },
+    {
+        "nameStr": "Doctor's fees.  Pay $50",
+        "cardStack": "commChestList",
+        "functionID": "payment",
+        "amount": 50,
+        "from": "activePlayer",
+        "to": "Bank"
+    },
+    {
+        "nameStr": "Get out of Jail Free",
+        "cardStack": "commChestList",
+        "functionID": "GOoJF"
+    },
+    {
+        "nameStr": "Go to Jail",
+        "cardStack": "commChestList",
+        "functionID": "jail"
+    },
+    {
+        "nameStr": "Grand Opera Night.  Collect $50 from every player",
+        "cardStack": "commChestList",
+        "functionID": "payment",
+        "amount": 50,
+        "from": "allPlayers",
+        "to": "activePlayer"
+    },
+    {
+        "nameStr": "Haliday Fund matures.  Collect $100",
+        "cardStack": "commChestList",
+        "functionID": "payment",
+        "amount": 100,
+        "from": "Bank",
+        "to": "activePlayer"
+    },
+    {
+        "nameStr": "Income tax refund.  Collect $20",
+        "cardStack": "commChestList",
+        "functionID": "payment",
+        "amount": 20,
+        "from": "Bank",
+        "to": "activePlayer"
+    },
+    {
+        "nameStr": "It is your birthday.  Collect $10 from each player",
+        "cardStack": "commChestList",
+        "functionID": "payment",
+        "amount": 10,
+        "from": "allPlayers",
+        "to": "activePlayer"
+    },
+    {
+        "nameStr": "Life insurance matures.  Collect $100",
+        "cardStack": "commChestList",
+        "functionID": "payment",
+        "amount": 100,
+        "from": "Bank",
+        "to": "activePlayer"
+    },
+    {
+        "nameStr": "Pay hospital fees of $100",
+        "cardStack": "commChestList",
+        "functionID": "payment",
+        "amount": 100,
+        "from": "activePlayer",
+        "to": "Bank"
+    },
+    {
+        "nameStr": "Pay school fees of $150",
+        "cardStack": "commChestList",
+        "functionID": "payment",
+        "amount": 150,
+        "from": "activePlayer",
+        "to": "Bank"
+    },
+    {
+        "nameStr": "Receive $25 consultancy fee",
+        "cardStack": "commChestList",
+        "functionID": "payment",
+        "amount": 25,
+        "from": "Bank",
+        "to": "activePlayer"
+    },
+    {
+        "nameStr": "You are assessed for street repairs",
+        "cardStack": "commChestList",
+        "functionID": "repairs",
+        "perHouse": 40,
+        "perHotel": 115
+    },
+    {
+        "nameStr": "Second prive in a beauty contest.  Collect $10",
+        "cardStack": "commChestList",
+        "functionID": "payment",
+        "amount": 10,
+        "from": "Bank",
+        "to": "activePlayer"
+    },
+    {
+        "nameStr": "You inherit $100",
+        "cardStack": "commChestList",
+        "functionID": "payment",
+        "amount": 100,
+        "from": "Bank",
+        "to": "activePlayer"
+    }
+]
